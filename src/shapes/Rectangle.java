@@ -1,176 +1,92 @@
 package shapes;
 
+import shapes.base.BaseShape;
+
+import java.awt.*;
+
 /**
  * Models a simple, solid rectangle. 
  * This class represents a Rectangle object. When combined with the GameArena class,
  * instances of the Rectangle class can be displayed on the screen.
  */
-public class Rectangle 
-{
-	// The following instance variables define the
-	// information needed to represent a Rectangle
-	// Feel free to more instance variables if you think it will 
-	// support your work... 
-	
-	private double xPosition;			// The X coordinate of this Rectangle
-	private double yPosition;			// The Y coordinate of this Rectangle
-	private double width;				// The width of this Rectangle
-	private double height;				// The height of this Rectangle
-	private int layer;					// The layer this Rectangle is on.
-	private String colour;				// The colour of this Rectangle
+public class Rectangle extends BaseShape {
+	public Rectangle(int x, int y, int rotation, int width, int height, int layer, Color colour) {
+		if (x < 0 || y < 0 || rotation < 0 || width < 0 || height < 0 || layer < 0) {
+			System.out.println(this.getClass().getName() + " needs to find a father figure");
+			return;
+		}
 
-										// Permissable colours are:
-										// BLACK, BLUE, CYAN, DARKGREY, GREY,
-										// GREEN, LIGHTGREY, MAGENTA, ORANGE,
-										// PINK, RED, WHITE, YELLOW 
+		super.x = x;
+		super.y = y;
 
+		super.rotation = rotation;
 
-	/**
-	 * Constructor. Creates a Rectangle with the given parameters.
-	 * @param x The x co-ordinate position of top left corner of the Rectangle (in pixels)
-	 * @param y The y co-ordinate position of top left corner of the Rectangle (in pixels)
-	 * @param w The width of the Rectangle (in pixels)
-	 * @param h The height of the Rectangle (in pixels)
-	 * @param col The colour of the Rectangle (Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW or #RRGGBB)
-	 */
-	public Rectangle(double x, double y, double w, double h, String col)
-	{
-		this.xPosition = x;
-		this.yPosition = y;
-		this.width = w;
-		this.height = h;
-		this.colour = col;
-		this.layer = 0;
-	}	
-									
-	/**
-	 * Constructor. Creates a Rectangle with the given parameters.
-	 * @param x The x co-ordinate position of top left corner of the Rectangle (in pixels)
-	 * @param y The y co-ordinate position of top left corner of the Rectangle (in pixels)
-	 * @param w The width of the Rectangle (in pixels)
-	 * @param h The height of the Rectangle (in pixels)
-	 * @param col The colour of the Rectangle (Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW or #RRGGBB)
-	 * @param layer The layer this Rectangle is to be drawn on. Objects with a higher layer number are always drawn on top of those with lower layer numbers.
-	 */
-	public Rectangle(double x, double y, double w, double h, String col, int layer)
-	{
-		this.xPosition = x;
-		this.yPosition = y;
-		this.width = w;
-		this.height = h;
-		this.colour = col;
-		this.layer = layer;
-	}	
-			
-	/**
-	 * Obtains the current position of this Rectangle.
-	 * @return the X coordinate of this Rectangle within the GameArena.
-	 */
-	public double getXPosition()
-	{
-		return xPosition;
+		super.width = width;
+		super.height = height;
+
+		super.layer = layer;
+		super.colour = colour;
+
 	}
 
 	/**
-	 * Obtains the current position of this Rectangle.
-	 * @return the Y coordinate of this Rectangle within the GameArena.
+	 * Moves this Sphere by the given amount.
+	 *
+	 * @param dx the distance to move on the x-axis (in pixels)
+	 * @param dy the distance to move on the y-axis (in pixels)
 	 */
-	public double getYPosition()
-	{
-		return yPosition;
+	public void move(int dx, int dy) {
+		super.x += dx;
+		super.y += dy;
 	}
 
 	/**
-	 * Moves the current position of this Rectangle to the given X co-ordinate
-	 * @param x the new x co-ordinate of this Rectangle
+	 * Determines if this Sphere is overlapping a given sphere.
+	 * If the two spheres overlap, they have collided.
+	 *
+	 * @param sphere the sphere to test for collision
+	 * @return true if this sphere is overlapping the given sphere, false otherwise.
 	 */
-	public void setXPosition(double x)
-	{
-		this.xPosition = x;
+	@Override
+	public boolean collides(Sphere sphere) {
+		//TODO: Sort this out?
+		return sphere.within(this) != 0;
 	}
 
 	/**
-	 * Moves the current position of this Rectangle to the given Y co-ordinate
-	 * @param y the new y co-ordinate of this Rectangle
+	 * Function to check that the current sphere object is within a square
+	 * @param rectangle Rectangle to check
+	 * @return true if this sphere is fully within the given rectangle, false otherwise.
 	 */
-	public void setYPosition(double y)
-	{
-		this.yPosition = y;
-	}
+	@Override
+	//TODO: Change type to rectangle once implemented
+	//TODO: Look into using rotation for weird maps. (if can be bothered to add unique maps as extra)
+	public int within(Rectangle rectangle) {
+		// Y collision parameters:
+		// y_sphere -/+ sphere_radius > y_rectangle -/+ rec width/2
 
-	/**
-	 * Obtains the width of this Rectangle.
-	 * @return the width of this Rectangle,in pixels.
-	 */
-	public double getWidth()
-	{
-		return width;
-	}
+		// Rectangle calculations
+		int minRX = rectangle.x - rectangle.width/2;
+		int maxRX = rectangle.x + rectangle.width/2;
 
-	/**
-	 * Sets the width of this Rectangle to the given value
-	 * @param w the new width of this Rectangle, in pixels.
-	 */
-	public void setWidth(double w)
-	{
-		width = w;
-	}
+		int minRY = rectangle.y - rectangle.height/2;
+		int maxRY = rectangle.y + rectangle.height/2;
 
-	/**
-	 * Obtains the height of this Rectangle.
-	 * @return the height of this Rectangle,in pixels.
-	 */
-	public double getHeight()
-	{
-		return height;
-	}
+		// Sphere calculations
+		//width and height are the same. (Diameter)
+		int minBX = x - width/2;
+		int maxBX = x + width/2;
 
-	/**
-	 * Sets the height of this Rectangle to the given value
-	 * @param h the new height of this Rectangle, in pixels.
-	 */
-	public void setHeight(double h)
-	{
-		height = h;
-	}
+		int minBY = y - height/2;
+		int maxBY = y + height/2;
 
-	/**
-	 * Obtains the layer of this Rectangle.
-	 * @return the layer of this Rectangle.
-	 */
-	public int getLayer()
-	{
-		return layer;
-	}
+		if(minRX >= minBX) return 1; // 1 if x is out of the box
+		if(minRY >= minBY) return 2;// 2 if y is out of the box
 
-	/**
-	 * Obtains the colour of this Rectangle.
-	 * @return a textual description of the colour of this Rectangle.
-	 */
-	public String getColour()
-	{
-		return colour;
-	}
+		if(maxRX <= maxBX) return 1;
+		if(maxRY <= maxBY) return 2;
 
-	/**
-	 * Sets the colour of this Rectangle.
-	 * @param c the new colour of this Rectangle, as a String value. Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW.
-	 */
-	public void setColour(String c)
-	{
-		colour = c;
+		// if none of the above conditions are true, then our sphere is still within
+		return 0; //0 if in the box
 	}
-
-	/**
-	 * Moves this Rectangle by the given amount.
-	 * 
-	 * @param dx the distance to move on the x axis (in pixels)
-	 * @param dy the distance to move on the y axis (in pixels)
-	 */
-	public void move(double dx, double dy)
-	{
-		xPosition += dx;
-		yPosition += dy;
-	}
-
 }

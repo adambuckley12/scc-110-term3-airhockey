@@ -1,5 +1,8 @@
 package shapes.base;
 
+import shapes.Rectangle;
+import shapes.Sphere;
+
 import java.awt.*;
 
 public abstract class BaseShape {
@@ -33,7 +36,11 @@ public abstract class BaseShape {
     public int layer;
     public Color colour;
 
+    public double xVelocity;
+    public double yVelocity;
 
-    public abstract <T extends BaseShape> boolean collides(T b);
-    public abstract <T extends BaseShape> boolean within(T b);
+    public abstract void move(int dx, int dy);
+
+    public abstract boolean collides(Sphere sphere);
+    public abstract int within(Rectangle rectangle);
 }

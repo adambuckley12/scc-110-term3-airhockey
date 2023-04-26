@@ -1,12 +1,14 @@
 package panels;
 
-import frames.MainFrame;
+import frames.GameFrame;
+//import frames.MainFrame;
 import panels.base.BasePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 public class MainPanel extends BasePanel {
 
@@ -15,20 +17,23 @@ public class MainPanel extends BasePanel {
      */
     public MainPanel(int width, int height) {
         this.initGame();
-        this.setSize(width, height);
+        this.setInitialSize(width, height);
     }
 
     public void initGame() {
-        this.currentFrame = new MainFrame();
-        this.currentFrame.setResizable(false);
-        this.currentFrame.setBackground(Color.BLACK);
-        this.currentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.currentFrame.setContentPane(this);
-        this.currentFrame.addKeyListener(this);
+        super.currentFrame = new GameFrame(this);
+        super.currentFrame.setResizable(false);
+        super.currentFrame.setBackground(Color.BLACK);
+        super.currentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.currentFrame.setContentPane(this);
+        super.currentFrame.setVisible(true);
 
-        super.setVisible(true);
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+        new Thread(this).start();
+
+        super.addMouseListener(this);
+        super.addMouseMotionListener(this);
+
+        super.currentFrame.addKeyListener(this);
 
     }
 
@@ -37,9 +42,10 @@ public class MainPanel extends BasePanel {
      * @param width the new width of this component in pixels
      * @param height the new height of this component in pixels
      */
-    public void setSize(int width, int height) {
+    public void setInitialSize(int width, int height) {
         super.width = width;
         super.height = height;
+
         super.setSize(width, height);
 
         if(super.currentFrame != null) {
@@ -48,15 +54,34 @@ public class MainPanel extends BasePanel {
             int frameHeight = height + insets.top + insets.bottom;
             super.currentFrame.setSize(frameWidth, frameHeight);
         }
-    }
+     }
 
+
+     /**
+     * Stolen code from GameArena
+     */
+
+	public void paint(Graphics gr) {
+        super.currentFrame.customPaint(gr, width, height);
+    }
 
     /**
      * Runnable overrides
      */
     @Override
     public void run() {
-        // KILL ME NOW
+        try {
+            while (!exiting) {
+
+                super.currentFrame.updatePositions();
+
+				this.repaint();
+				Thread.sleep(10);
+			}
+		} catch (InterruptedException ignored) {}
+
+		if (super.currentFrame != null)
+            super.currentFrame.dispatchEvent(new WindowEvent(super.currentFrame, WindowEvent.WINDOW_CLOSING));
     }
 
 
