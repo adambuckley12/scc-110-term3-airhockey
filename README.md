@@ -3,6 +3,6 @@
 Term 3 SCC110 Project.
 
 Air Hockey Game:
-Select amount of balls, ball speed and max score
+Select amount of Spheres, sphere speed and max score
 ....
 //TODO
