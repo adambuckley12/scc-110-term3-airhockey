@@ -77,7 +77,7 @@ public class GameArena extends JPanel implements Runnable, KeyListener, MouseLis
 		if (createWindow)
 		{
 			this.frame = new JFrame();
-			frame.setTitle("Let's Play!");
+			frame.setTitle("Adam Buckley SCC110 Air Hockey Term 3");
 			frame.setSize(width, height);
 			frame.setResizable(false);
 			frame.setBackground(Color.BLACK);
