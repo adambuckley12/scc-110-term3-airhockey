@@ -28,7 +28,7 @@ public abstract class BaseFrame extends JFrame {
      */
     public void playSound(String soundName)
     {
-          new Thread( () -> {  //TODO MAKE THIS LESS CANCER AND JUST GET BETTER AUDIO FILES SO NO NEED FOR NEW THREAD
+          new Thread( () -> {  //TODO MAKE THIS LESS CANCER AND JUST GET BETTER AUDIO FILES SO NO NEED FOR NEW THREAD SCUFFED SHIT
               try {
                   AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
                   Clip clip = AudioSystem.getClip();
