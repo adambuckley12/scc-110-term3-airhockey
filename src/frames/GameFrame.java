@@ -12,7 +12,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Objects;
 
 public class GameFrame extends BaseFrame {
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
@@ -110,52 +110,44 @@ public class GameFrame extends BaseFrame {
 
         // Make Sure Players are kept bounds. include radius in calculations
 
-        if (player1.x + player1.width/2 > 450) {
-            player1.x = 450 - player1.width/2;
+        if (player1.x + player1.width / 2 > 450) {
+            player1.x = 450 - player1.width / 2;
         }
 
-        if (player2.x - player2.width/2 < 450) {
-            player2.x = 450 + player2.width/2;
+        if (player2.x - player2.width / 2 < 450) {
+            player2.x = 450 + player2.width / 2;
         }
 
-        if (player1.x - player1.width/2 < 0) {
+        if (player1.x - player1.width / 2 < 0) {
             player1.x = player1.width / 2;
         }
 
-        if (player2.x + player2.width/2 > 900) {
-            player2.x = 900 - player2.width/2;
+        if (player2.x + player2.width / 2 > 900) {
+            player2.x = 900 - player2.width / 2;
         }
 
-        if (player1.y - player1.height/2 < 0) {
+        if (player1.y - player1.height / 2 < 0) {
             player1.y = player1.height / 2;
         }
 
-        if (player2.y - player2.height/2 < 0) {
+        if (player2.y - player2.height / 2 < 0) {
             player2.y = player2.height / 2;
         }
 
-        if (player1.y + player1.height/2 > 600) {
-            player1.y = 600 - player1.height/2;
+        if (player1.y + player1.height / 2 > 600) {
+            player1.y = 600 - player1.height / 2;
         }
 
-        if (player2.y + player2.height/2 > 600) {
-            player2.y = 600 - player2.height/2;
+        if (player2.y + player2.height / 2 > 600) {
+            player2.y = 600 - player2.height / 2;
         }
-
-
-
-
-
 
 
         for (BaseShape o : shapes) {
             if (o instanceof Rectangle) continue; //no need to update positions of rectangles they are static
 
-            //TODO!!! MOVE THIS SOMEWHERE ELSE SO ITS NOT REPEATEDLY CHECKED EACH FRAME FOR PERFORMANCE ONLY NEEDS CHECKING ONCE PER FRAME
-
-
             // Taking current velocity
-            // Adding Friction (0.2% of current velocity) //TODO give options for friction in settings ???? (Add settings to each Panel)
+            // Adding Friction (0.2% of current velocity)
             // Updating velocity
             // determining new coords.
             // collisions
@@ -208,8 +200,19 @@ public class GameFrame extends BaseFrame {
 
                             leftGoalCount++;
                             leftGoalText.text = String.valueOf(leftGoalCount);
-                            resetPositions();
+                            resetPositions(1);
                             super.playSound("src/assets/audio/applause.wav");
+
+                            if (leftGoalCount >= super.parentPanel.maxGoals)
+                            {
+                                super.parentPanel.winner = 2;
+                                super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
+                                leftGoalCount = 0;
+                                rightGoalCount = 0;
+
+                            }
+
+
 
                             break;
                         }
@@ -217,44 +220,28 @@ public class GameFrame extends BaseFrame {
                         if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
-                            resetPositions();
+                            resetPositions(2);
 
                             super.playSound("src/assets/audio/applause.wav");
+                            if (rightGoalCount >= super.parentPanel.maxGoals)
+                            {
+                                super.parentPanel.winner = 1;
 
+                                super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
+                                leftGoalCount = 0;
+                                rightGoalCount = 0;
+
+
+                            }
                             break;
                         }
-
-                   /* switch (o.within((Rectangle) comparison)) {
-
-                        //check if in left or right goal
-
-                        // collision with left/right
-                        case 1 -> {
-                            // IF INLINE WITH Y HEIGHT OF GOAL DONT BOUNCE. Goal is 224px tall and centered at 300px
-if (o.y < 300 + 100 && o.y > 300 - 100) {
-                        continue;
-                    }
-                            o.x = (int) (initialX - Math.round(o.xVelocity));
-                            o.xVelocity *= -1;// 890 - 10
-                            //System.out.println(o.xVelocity + " - " + o.yVelocity);
-                        }
-
-                        // collision with the top/bottom
-                        case 2 -> {
-                            o.y = (int) (initialY - Math.round(o.yVelocity));
-                            o.yVelocity *= -1;
-                        }
-                    }*/
-
-                    // it is possible for the puck to be let outside the rectangle by going through the goal at enough angle to be outside and then move out the goal before center goes over line.
-                    // This makes sure it reenters the rectangle (honestly could have done all collisions like this but already made BaseShape.within()  TODO?? in case i have non rectangular shaped maps??)
+                    //If its inline with a goal allow it to pass through
                     if (o.y < 300 + 100 && o.y > 300 - 100) {
                         continue;
                     }
 
-                    int radius = o.width/2;
+                    int radius = o.width / 2;
                     int border = 16;
-
 
 
                     if (o.x + radius > 900 - border) {
@@ -288,19 +275,36 @@ if (o.y < 300 + 100 && o.y > 300 - 100) {
         if (e.getX() > 775 && e.getY() < 58) {
             //super.playSound("src/assets/audio/click.wav");
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
-            resetPositions();
+            resetPositions(0);
             leftGoalCount = 0;
             rightGoalCount = 0;
         }
 
     }
 
-    public void resetPositions() {
+    public void resetPositions(int scorer) {
 
+        //0 for none, 1 for left, 2 for right
 
-        //move puck to center
-        puck1.x = 450;
-        puck1.y = 300;
+        if (scorer == 0)
+        {
+            //move puck to center
+            puck1.x = 450;
+            puck1.y = 300;
+        }
+        else if (scorer == 2)
+        {
+            //move puck to right of center
+            puck1.x = 500;
+            puck1.y = 300;
+        }
+        else if (scorer == 1)
+        {
+            //move puck to left
+            puck1.x = 400;
+            puck1.y = 300;
+        }
+
 
         //move players to left and right
         player1.x = 50;
@@ -309,10 +313,9 @@ if (o.y < 300 + 100 && o.y > 300 - 100) {
         player2.x = 850;
         player2.y = 300;
 
-        // SET PUCK VELOCITY TO RANDOM VALUES between -50 and 50
-        // TODO: THIS IS FOR TESTING ONLY REMOVE BEFORE SUBMITTING
-        puck1.xVelocity = (int) (Math.random() * 100) - 50;
-        puck1.yVelocity = (int) (Math.random() * 100) - 50;
+        //reset velocities
+        puck1.xVelocity = 0;
+        puck1.yVelocity = 0;
 
 
         player1.xVelocity = 0;

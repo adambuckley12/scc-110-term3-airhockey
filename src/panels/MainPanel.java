@@ -4,6 +4,8 @@ import frames.GameFrame;
 //import frames.MainFrame;
 import frames.MainFrame;
 import frames.SettingsFrame;
+import frames.WinnerFrame;
+import frames.base.BaseFrame;
 import panels.base.BasePanel;
 
 import javax.swing.*;
@@ -14,9 +16,8 @@ import java.awt.event.WindowEvent;
 
 public class MainPanel extends BasePanel {
 
+
     public MainFrame MainMenu = new MainFrame(this);
-    public SettingsFrame SettingsMenu = new SettingsFrame(this);
-    public GameFrame GameMenu = new GameFrame(this);
 
     public MainPanel(int width, int height) {
         this.initGame();

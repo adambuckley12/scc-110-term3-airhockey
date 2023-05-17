@@ -15,5 +15,11 @@ public abstract class BasePanel extends JPanel implements Runnable, KeyListener,
     public boolean exiting = false;
 
 
+    //ALL GLOBAL SETTINGS
+
+    public int maxGoals = 1;
+    public boolean audioEnabled = false;
+
+    public int winner = 0;
 
 }

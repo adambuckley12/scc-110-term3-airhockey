@@ -65,7 +65,7 @@ public class MainFrame extends BaseFrame {
              Start:
                 Top Left: 45, 140
                 Bottom Right: 245, 200
-             Settings:
+             GlobalSettings:
                 Top Left: 45, 285
                 Bottom Right: 245, 345
              Exit:
@@ -80,12 +80,12 @@ public class MainFrame extends BaseFrame {
             super.parentPanel.currentFrame = new GameFrame(super.parentPanel);
         }
         else if (e.getX() >= 45 && e.getX() <= 245 && e.getY() >= 285 && e.getY() <= 345) {
-            System.out.println("Settings button pressed");
+            System.out.println("GlobalSettings button pressed");
             super.parentPanel.currentFrame = new SettingsFrame(super.parentPanel);
         }
         else if (e.getX() >= 45 && e.getX() <= 245 && e.getY() >= 420 && e.getY() <= 480) {
             System.out.println("Exit button pressed");
-            super.parentPanel.exiting = true;
+            System.exit(0);
         }
         System.out.println("Mouse event in MainFrame");
     }
