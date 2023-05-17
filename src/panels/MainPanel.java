@@ -2,6 +2,7 @@ package panels;
 
 import frames.GameFrame;
 //import frames.MainFrame;
+import frames.MainFrame;
 import frames.SettingsFrame;
 import panels.base.BasePanel;
 
@@ -13,16 +14,17 @@ import java.awt.event.WindowEvent;
 
 public class MainPanel extends BasePanel {
 
-    /**
-     * My Code
-     */
+    public MainFrame MainMenu = new MainFrame(this);
+    public SettingsFrame SettingsMenu = new SettingsFrame(this);
+    public GameFrame GameMenu = new GameFrame(this);
+
     public MainPanel(int width, int height) {
         this.initGame();
         this.setInitialSize(width, height);
     }
 
     public void initGame() {
-        super.currentFrame = new GameFrame(this);
+        super.currentFrame = MainMenu;
         super.currentFrame.setResizable(false);
         super.currentFrame.setBackground(Color.BLACK);
         super.currentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -192,6 +194,9 @@ public class MainPanel extends BasePanel {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+
+        //Check current frame = main frame
+        this.currentFrame.MouseEvent(e);
 
     }
     @Override

@@ -4,6 +4,7 @@ import panels.base.BasePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import javax.sound.sampled.*;
 
@@ -28,7 +29,8 @@ public abstract class BaseFrame extends JFrame {
      */
     public void playSound(String soundName)
     {
-          new Thread( () -> {  //TODO MAKE THIS LESS CANCER AND JUST GET BETTER AUDIO FILES SO NO NEED FOR NEW THREAD SCUFFED SHIT
+
+          /*new Thread( () -> {  //TODO MAKE THIS LESS CANCER AND JUST GET BETTER AUDIO FILES SO NO NEED FOR NEW THREAD SCUFFED SHIT
               try {
                   AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
                   Clip clip = AudioSystem.getClip();
@@ -41,7 +43,10 @@ public abstract class BaseFrame extends JFrame {
                   System.out.println("Error with playing sound.");
                   ex.printStackTrace();
               }
-          }).start();
+          }).start();*/
 
     }
+
+    public abstract void MouseEvent(MouseEvent e);
+
 }

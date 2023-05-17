@@ -9,6 +9,7 @@ import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,6 +29,8 @@ public class GameFrame extends BaseFrame {
 
     private final Text leftGoalText = new Text(String.valueOf(leftGoalCount), 100, 100, 50, new Color(0f, 0f, 0f, 1f), 1);
     private final Text rightGoalText = new Text(String.valueOf(rightGoalCount), 800, 100, 50, new Color(0f, 0f, 0f, 1f), 2);
+
+    private float coeffRestitution = 0.9f;
 
 
     public GameFrame(BasePanel parentPanel) {
@@ -105,14 +108,45 @@ public class GameFrame extends BaseFrame {
     @Override
     public void updatePositions() {
 
-        if (player1.x >= 450) {
-            player1.x = 450;
+        // Make Sure Players are kept bounds. include radius in calculations
+
+        if (player1.x + player1.width/2 > 450) {
+            player1.x = 450 - player1.width/2;
+        }
+
+        if (player2.x - player2.width/2 < 450) {
+            player2.x = 450 + player2.width/2;
+        }
+
+        if (player1.x - player1.width/2 < 0) {
+            player1.x = player1.width / 2;
+        }
+
+        if (player2.x + player2.width/2 > 900) {
+            player2.x = 900 - player2.width/2;
+        }
+
+        if (player1.y - player1.height/2 < 0) {
+            player1.y = player1.height / 2;
+        }
+
+        if (player2.y - player2.height/2 < 0) {
+            player2.y = player2.height / 2;
+        }
+
+        if (player1.y + player1.height/2 > 600) {
+            player1.y = 600 - player1.height/2;
+        }
+
+        if (player2.y + player2.height/2 > 600) {
+            player2.y = 600 - player2.height/2;
         }
 
 
-        if (player2.x < 450) {
-            player2.x = 450;
-        }
+
+
+
+
 
         for (BaseShape o : shapes) {
             if (o instanceof Rectangle) continue; //no need to update positions of rectangles they are static
@@ -190,17 +224,16 @@ public class GameFrame extends BaseFrame {
                             break;
                         }
 
-
-                    switch (o.within((Rectangle) comparison)) {
+                   /* switch (o.within((Rectangle) comparison)) {
 
                         //check if in left or right goal
 
                         // collision with left/right
                         case 1 -> {
                             // IF INLINE WITH Y HEIGHT OF GOAL DONT BOUNCE. Goal is 224px tall and centered at 300px
-                            if (o.y < 300 + 100 && o.y > 300 - 100) {
-                                continue;
-                            }
+if (o.y < 300 + 100 && o.y > 300 - 100) {
+                        continue;
+                    }
                             o.x = (int) (initialX - Math.round(o.xVelocity));
                             o.xVelocity *= -1;// 890 - 10
                             //System.out.println(o.xVelocity + " - " + o.yVelocity);
@@ -211,26 +244,36 @@ public class GameFrame extends BaseFrame {
                             o.y = (int) (initialY - Math.round(o.yVelocity));
                             o.yVelocity *= -1;
                         }
-                    }
+                    }*/
 
                     // it is possible for the puck to be let outside the rectangle by going through the goal at enough angle to be outside and then move out the goal before center goes over line.
                     // This makes sure it reenters the rectangle (honestly could have done all collisions like this but already made BaseShape.within()  TODO?? in case i have non rectangular shaped maps??)
-                    if (o.x > 900 - 16) {
-                        o.x = 900 - 20;
+                    if (o.y < 300 + 100 && o.y > 300 - 100) {
+                        continue;
+                    }
+
+                    int radius = o.width/2;
+                    int border = 16;
+
+
+
+                    if (o.x + radius > 900 - border) {
+                        o.x = 900 - 17 - radius;
                         o.xVelocity *= -1;
                     }
-                    if (o.x < 16) {
-                        o.x = 20;
+                    if (o.x - radius < border) {
+                        o.x = 17 + radius; // get it just inside by
                         o.xVelocity *= -1;
                     }
-                    if (o.y > 600 - 16) {
-                        o.y = 600 - 20;
+                    if (o.y + radius > 600 - border) {
+                        o.y = 600 - 17 - radius;
                         o.yVelocity *= -1;
                     }
-                    if (o.y < 16) {
-                        o.y = 20;
+                    if (o.y - radius < border) {
+                        o.y = 17 + radius;
                         o.yVelocity *= -1;
                     }
+
 
                 }
             }
@@ -238,21 +281,36 @@ public class GameFrame extends BaseFrame {
 
     }
 
+    @Override
+    public void MouseEvent(MouseEvent e) {
+
+        //Menu Exit Button:
+        if (e.getX() > 775 && e.getY() < 58) {
+            //super.playSound("src/assets/audio/click.wav");
+            super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
+            resetPositions();
+            leftGoalCount = 0;
+            rightGoalCount = 0;
+        }
+
+    }
+
     public void resetPositions() {
-        //TODO: reset positions of all objects
+
 
         //move puck to center
         puck1.x = 450;
         puck1.y = 300;
 
         //move players to left and right
-        player1.x = 0;
-        player1.y = 0;
+        player1.x = 50;
+        player1.y = 300;
 
-        player2.x = 0;
-        player2.y = 0;
+        player2.x = 850;
+        player2.y = 300;
 
-        //SET PUCK VELO TO RANDOM VALUES between -50 and 50 //TODO: THIS IS FOR TESTING ONLY REMOVE BEFORE SUBMITTING
+        // SET PUCK VELOCITY TO RANDOM VALUES between -50 and 50
+        // TODO: THIS IS FOR TESTING ONLY REMOVE BEFORE SUBMITTING
         puck1.xVelocity = (int) (Math.random() * 100) - 50;
         puck1.yVelocity = (int) (Math.random() * 100) - 50;
 

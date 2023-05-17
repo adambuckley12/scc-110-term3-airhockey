@@ -7,6 +7,7 @@ import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -21,7 +22,6 @@ public class SettingsFrame extends BaseFrame {
 
 
     }
-
 
     private BufferedImage buffer;
     private Graphics2D graphics;
@@ -58,6 +58,11 @@ public class SettingsFrame extends BaseFrame {
 
     @Override
     public void updatePositions() {
+
+    }
+
+    @Override
+    public void MouseEvent(MouseEvent e) {
 
     }
 }
