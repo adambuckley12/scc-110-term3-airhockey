@@ -39,6 +39,8 @@ public abstract class BaseShape {
     public double xVelocity;
     public double yVelocity;
 
+    public String text;
+
     public abstract void move(int dx, int dy);
 
     public abstract boolean collides(Sphere sphere);

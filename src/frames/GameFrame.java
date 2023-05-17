@@ -5,19 +5,32 @@ import panels.base.BasePanel;
 import physics.Physics;
 import shapes.Rectangle;
 import shapes.Sphere;
+import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.Random;
 
 public class GameFrame extends BaseFrame {
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
-    private final Sphere player1 = new Sphere(50, 300, 0, 50, 1, new Color(0f,0.2f,0.9f,1f), 10, -10);
-    private final Sphere player2 = new Sphere(850, 300, 0, 50, 1, new Color(1f,0.2f,0f,1f), -10, 10);
+    public static final Sphere player1 = new Sphere(50, 300, 0, 70, 1, new Color(0f,0.2f,0.9f,1f), 0, 0);
+    public static final Sphere player2 = new Sphere(850, 300, 0, 70, 1, new Color(1f,0.2f,0f,1f), 0, 0);
 
-    private final Sphere puck1 = new Sphere(451, 300, 0, 50, 2, new Color(0f,0f,0f,1f ), 1, 1);
+    public final Sphere puck1 = new Sphere(451, 300, 0, 45, 2, new Color(0f,0f,0f,1f ), 0, 0);
+
+    public final Rectangle leftGoal = new Rectangle(0, 300, 0, 40, 224, 0, new Color(0f,0f,0f,.1f ));
+    public final Rectangle rightGoal = new Rectangle(900, 300, 0, 40, 224, 0, new Color(0f,0f,0f,.1f ));
+
+    public int leftGoalCount = 0;
+    public int rightGoalCount = 0;
+
+    private final Text leftGoalText = new Text(String.valueOf(leftGoalCount), 100, 100, 50, new Color(0f, 0f, 0f, 1f), 1);
+    private final Text rightGoalText = new Text(String.valueOf(rightGoalCount), 800, 100, 50, new Color(0f, 0f, 0f, 1f), 2);
+
+
+
 
 
     public GameFrame(BasePanel parentPanel) {
@@ -26,11 +39,16 @@ public class GameFrame extends BaseFrame {
 
         // place shapes
 
+
         // test color
         shapes.add(new Rectangle(451, 300, 0, 872, 570, 0, new Color(0f,0f,0.1f,.1f )));
+        shapes.add(leftGoal);
+        shapes.add(rightGoal);
         shapes.add(player1);
         shapes.add(player2);
         shapes.add(puck1);
+        shapes.add(leftGoalText);
+        shapes.add(rightGoalText);
 
         // right left borders are 15px
         // top bottom borders are 15px
@@ -52,11 +70,11 @@ public class GameFrame extends BaseFrame {
             super.parentPanel.setSize(width, height);
 
             buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-			graphics = buffer.createGraphics();
+            graphics = buffer.createGraphics();
 
-			// Remember that we've completed this initialisation, so that we don't do it again...
-			rendered = true;
-		}
+            //completed this initialisation, so that we don't do it again
+            rendered = true;
+        }
 
         synchronized (this) {
             if (!super.parentPanel.exiting) {
@@ -74,6 +92,11 @@ public class GameFrame extends BaseFrame {
                     if (o instanceof Rectangle) {
                         graphics.fillRect(o.x - o.width / 2 , o.y - o.height / 2, o.width, o.height);
                     }
+
+                    if (o instanceof Text) {
+                        graphics.setFont(new Font("TimesRoman", Font.PLAIN, o.width));
+                        graphics.drawString(o.text, o.x - o.width / 2, o.y - o.height / 2);
+                    }
                 }
             }
 
@@ -85,11 +108,19 @@ public class GameFrame extends BaseFrame {
     public void updatePositions() {
         for (BaseShape o : shapes) {
             if(o instanceof Rectangle) continue;
-            //TODO if player1 in wrong half of screen, move to correct half
 
+            //TODO!!! MOVE THIS SOMEWHERE ELSE SO ITS NOT REPEATEDLY CHECKED EACH FRAME FOR PERFORMANCE
+            if (o == player1) {
+                if (o.x >= 450) {
+                    o.x = 450;
+                }
+            }
 
-
-            //TODO if player2 in wrong half of screen, move to correct half
+            if (o == player2) {
+                if (o.x < 450) {
+                    o.x = 450;
+                }
+            }
 
 
             // Taking current velocity
@@ -112,14 +143,15 @@ public class GameFrame extends BaseFrame {
             int initialX = o.x;
             int initialY = o.y;
 
-            o.x += Math.round(o.xVelocity); //900, 10 = 910
+            o.x += Math.round(o.xVelocity); //900, 10d = 910
             o.y += Math.round(o.yVelocity);
             
-            // TODO another setting - max speed.
+            // TODO another setting - max speed maybe???
             
-            // Detect if collides with anything on path?
+            // Detect if collides with anything on path before moving and then move to make smoother?? maybe???
             
-            
+            //ONLY NEED TO CALC THIS FOR PUCK ASSUME PLAYER PADDLE DOESNT BOUNCE AS CONTROLLED
+            if (o != this.puck1) continue;
             for(BaseShape comparison: shapes) {
                 // make sure that we skip the current object
                 if(comparison.x == o.x && comparison.y == o.y) continue;
@@ -129,24 +161,53 @@ public class GameFrame extends BaseFrame {
                         // the point at which they touch
                         o.x = initialX;
                         o.y = initialY;
-//                        // TODO: Handle collisions (get new velocities and angles)
-//
-//                        //get distance between the two objects
-//                        double distanceBetweenCenters = Math.sqrt(Math.pow(o.x - comparison.x, 2) + Math.pow(o.y - comparison.y, 2));
-
-
                         // deflect
                         Physics.deflect(o, comparison);
+                        //write code to play sound from file here
+
+                        super.playSound("src/assets/audio/hit.wav");
+
 
                     }
                 } else if(comparison instanceof Rectangle) {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
+                    //Check if in goal
+                    if (comparison == leftGoal)
+                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
+
+                            leftGoalCount++;
+                            leftGoalText.text = String.valueOf(leftGoalCount);
+                            resetPositions();
+                            super.playSound("src/assets/audio/applause.wav");
+
+                            break;
+                        }
+                    if (comparison == rightGoal)
+                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
+                            rightGoalCount++;
+                            rightGoalText.text = String.valueOf(rightGoalCount);
+                            resetPositions();
+
+                            super.playSound("src/assets/audio/applause.wav");
+
+                            break;
+                        }
+
+
+
                     switch (o.within((Rectangle) comparison)) {
+
+                        //check if in left or right goal
+
                         // collision with left/right
                         case 1 -> {
+                            // IF INLINE WITH Y HEIGHT OF GOAL DONT BOUNCE. Goal is 224px tall and centered at 300px
+                            if (o.y < 300 + 100 && o.y > 300 - 100 ) {
+                                continue;
+                            }
                             o.x = (int) (initialX - Math.round(o.xVelocity));
                             o.xVelocity *= -1;// 890 - 10
-                            System.out.println(o.xVelocity + " - " + o.yVelocity);
+                            //System.out.println(o.xVelocity + " - " + o.yVelocity);
                         }
 
                         // collision with the top/bottom
@@ -155,8 +216,56 @@ public class GameFrame extends BaseFrame {
                             o.yVelocity *= -1;
                         }
                     }
+
+                    // it is possible for the puck to be let outside the rectangle by going through the goal at enough angle to be outside and then move out the goal before center goes over line.
+                    // This makes sure it reenters the rectangle (honestly could have done all collisions like this but alerady made BaseShape.within()  TODO?? encase i have non rectangular shaped maps??)
+                    if (o.x > 900-16) {
+                        o.x = 900-20;
+                        o.xVelocity *= -1;
+                    }
+                    if (o.x < 16) {
+                        o.x = 20;
+                        o.xVelocity *= -1;
+                    }
+                    if (o.y > 600 - 16) {
+                        o.y = 600-20;
+                        o.yVelocity *= -1;
+                    }
+                    if (o.y < 16) {
+                        o.y = 20;
+                        o.yVelocity *= -1;
+                    }
+
                 }
             }
         }
+
     }
+
+    public void resetPositions() {
+        //TODO: reset positions of all objects
+
+        //move puck to center
+        puck1.x = 450;
+        puck1.y = 300;
+
+        //move players to left and right
+        player1.x = 0;
+        player1.y = 0;
+
+        player2.x = 0;
+        player2.y = 0;
+
+        //SET PUCK VELO TO RANDOM VALUES between -50 and 50
+        puck1.xVelocity = (int) (Math.random() * 100) -50;
+        puck1.yVelocity = (int) (Math.random() * 100) -50 ;
+
+
+        player1.xVelocity = 0;
+        player1.yVelocity = 0;
+
+        player2.xVelocity = 0;
+        player2.yVelocity = 0;
+    }
+
 }

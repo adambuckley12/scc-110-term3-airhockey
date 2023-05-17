@@ -2,6 +2,7 @@ package panels;
 
 import frames.GameFrame;
 //import frames.MainFrame;
+import frames.SettingsFrame;
 import panels.base.BasePanel;
 
 import javax.swing.*;
@@ -58,7 +59,7 @@ public class MainPanel extends BasePanel {
 
 
      /**
-     * Stolen code from GameArena
+     * Stolen code from GameArena provided file
      */
 
 	public void paint(Graphics gr) {
@@ -90,14 +91,99 @@ public class MainPanel extends BasePanel {
      */
     @Override
     public void keyTyped(KeyEvent e) {
+        System.out.println("Key typed: " + e.getKeyChar());
+
+
+
+
     }
+
 
     @Override
     public void keyPressed(KeyEvent e) {
+
+        if (e.getKeyChar() == 'w') {
+            //Set Sphere PLayer1 y velocity to 5
+            GameFrame.player1.yVelocity = -5;
+
+        }
+        if (e.getKeyChar() == 's') {
+            //Set Sphere PLayer1 y velocity to -5
+            GameFrame.player1.yVelocity = 5;
+        }
+        if (e.getKeyChar() == 'a') {
+            //Set Sphere PLayer2 x velocity to -5
+            GameFrame.player1.xVelocity = -5;
+        }
+        if (e.getKeyChar() == 'd') {
+            //Set Sphere PLayer2 x velocity to 5
+            GameFrame.player1.xVelocity = 5;
+        }
+
+        // same but with arrow keys for player 2
+
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            //Set Sphere PLayer1 y velocity to 5
+            GameFrame.player2.yVelocity = -5;
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            //Set Sphere PLayer1 y velocity to -5
+            GameFrame.player2.yVelocity = 5;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            //Set Sphere PLayer2 x velocity to -5
+            GameFrame.player2.xVelocity = -5;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            //Set Sphere PLayer2 x velocity to 5
+            GameFrame.player2.xVelocity = 5;
+        }
+
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
+
+        if (e.getKeyChar() == 'w') {
+            //Set Sphere PLayer1 y velocity to 5
+            GameFrame.player1.yVelocity = -0;
+
+        }
+        if (e.getKeyChar() == 's') {
+            //Set Sphere PLayer1 y velocity to -5
+            GameFrame.player1.yVelocity = 0;
+        }
+        if (e.getKeyChar() == 'a') {
+            //Set Sphere PLayer2 x velocity to -5
+            GameFrame.player1.xVelocity = -0;
+        }
+        if (e.getKeyChar() == 'd') {
+            //Set Sphere PLayer2 x velocity to 5
+            GameFrame.player1.xVelocity = 0;
+        }
+
+        // same but with arrow keys for player 2
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            //Set Sphere PLayer1 y velocity to 5
+            GameFrame.player2.yVelocity = -0;
+
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            //Set Sphere PLayer1 y velocity to -5
+            GameFrame.player2.yVelocity = 0;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            //Set Sphere PLayer2 x velocity to -5
+            GameFrame.player2.xVelocity = -0;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            //Set Sphere PLayer2 x velocity to 5
+            GameFrame.player2.xVelocity = 0;
+        }
+
+
     }
 
 
