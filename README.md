@@ -3,13 +3,13 @@
 Adam Buckley Scc 110 Term 3 Air Hockey Java game project repository:
 
 
-# Compile and Run:
+# Compile and Run via a CLI:
 
 *Using included run script:*
 *Navigate to inside project directory:*
 
     chmod +x run.sh #IGNORE THIS LINE IF USING WINDOWS.
-    ./run.sh
+    ./run.sh 
 
 ***or***
 
