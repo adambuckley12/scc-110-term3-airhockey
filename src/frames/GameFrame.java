@@ -32,6 +32,7 @@ public class GameFrame extends BaseFrame {
     public GameFrame(BasePanel parentPanel) {
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Game Frame");
+        super.playSound("src/assets/audio/fanfare.wav");
 
         shapes.add(leftGoal);
         shapes.add(rightGoal);
@@ -186,22 +187,10 @@ public class GameFrame extends BaseFrame {
         for (BaseShape o : shapes) {
             if (o instanceof Rectangle) continue; // No need to update positions of rectangles as they are static
 
-            // Taking current velocity
-            // Adding friction (0.2% of current velocity)
-            // Updating velocity
-            // Determining new coordinates
-            // Collisions
-            // Goals, etc.
-
-            // X velocity
-            // Y velocity
-            // Apply friction to X and Y separately, as same as adding friction on total velocity
 
             // TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
-            double friction = 0.001; // 0.2% friction
-
-            o.xVelocity *= (1.0 - friction);
-            o.yVelocity *= (1.0 - friction);
+            o.xVelocity *= (1.0 - super.parentPanel.coefFriction);
+            o.yVelocity *= (1.0 - super.parentPanel.coefFriction);
 
             int initialX = o.x;
             int initialY = o.y;
@@ -210,8 +199,6 @@ public class GameFrame extends BaseFrame {
             o.y += Math.round(o.yVelocity);
 
             // TODO: another setting - max speed maybe???
-
-            // Detect if collides with anything on the path before moving and then move to make it smoother?? maybe???
 
             // ONLY NEED TO CALCULATE THIS FOR PUCK ASSUME PLAYER PADDLE DOESN'T BOUNCE AS CONTROLLED
             if (o != puck1) continue;
