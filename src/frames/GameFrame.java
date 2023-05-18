@@ -159,7 +159,7 @@ public class GameFrame extends BaseFrame {
                 if (comparison.x == o.x && comparison.y == o.y) continue;
 
                 if (comparison instanceof Sphere) {
-                    if (o.collides((Sphere) comparison)) {
+                    if (((Sphere)o).collides((Sphere)comparison)) {
                         // the point at which they touch
                         o.x = initialX;
                         o.y = initialY;
@@ -293,6 +293,7 @@ public class GameFrame extends BaseFrame {
 
         if (didCollide) {
             super.playSound("src/assets/audio/bounce.wav");
+
 
             //Assume small loss of energy on bounce. (sound and heat)
             o.xVelocity *= super.parentPanel.coefRestitution;

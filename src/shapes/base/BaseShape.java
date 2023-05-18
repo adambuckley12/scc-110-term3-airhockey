@@ -41,8 +41,4 @@ public abstract class BaseShape {
 
     public String text;
 
-    public abstract void move(int dx, int dy);
-
-    public abstract boolean collides(Sphere sphere);
-    public abstract int within(Rectangle rectangle);
 }

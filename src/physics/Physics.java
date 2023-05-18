@@ -43,7 +43,7 @@ public class Physics {
         //Making sure puck is not inside paddle (e.g. pressed against a wall so moves through paddle)
         //makes bounces more realistic, smoother and stops weird clipping where it keeps bouncing in same place
 
-        if (puck.collides((Sphere)paddle)) {
+        if (((Sphere)puck).collides((Sphere)paddle)) {
             //calc direction of puck from paddle
             double[] impactVector2 = {paddle.x - puck.x, paddle.y - puck.y};
 

@@ -10,11 +10,10 @@ import java.awt.*;
  * instances of the Text class can be displayed on the screen to show display
  * an appropriate piece of text.
  */
-public class Text extends BaseShape
-{
+public class Text extends BaseShape {
 
 	public Text(String text, int x, int y, int size, Color colour, int layer) {
-		if(x < 0 || y < 0 || rotation < 0 || width < 0 || height < 0 || layer < 0) {
+		if (x < 0 || y < 0 || rotation < 0 || width < 0 || height < 0 || layer < 0) {
 			System.out.println(this.getClass().getName() + " needs to find a father figure");
 			return;
 
@@ -31,22 +30,5 @@ public class Text extends BaseShape
 
 		super.text = text;
 
-	}
-
-
-
-	@Override
-	public void move(int dx, int dy) {
-
-	}
-
-	@Override
-	public boolean collides(Sphere sphere) {
-		return false;
-	}
-
-	@Override
-	public int within(Rectangle rectangle) {
-		return 0;
 	}
 }
