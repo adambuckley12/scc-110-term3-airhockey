@@ -1,11 +1,7 @@
 package panels;
 
 import frames.GameFrame;
-//import frames.MainFrame;
 import frames.MainFrame;
-import frames.SettingsFrame;
-import frames.WinnerFrame;
-import frames.base.BaseFrame;
 import panels.base.BasePanel;
 
 import javax.swing.*;
@@ -13,7 +9,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
-import java.security.Key;
 
 public class MainPanel extends BasePanel {
 
@@ -127,7 +122,7 @@ public class MainPanel extends BasePanel {
         }
         // same but with arrow keys for player 2
         int keyCode = e.getKeyCode();
-        switch (keyCode){
+        switch (keyCode) {
             case KeyEvent.VK_UP -> {
 
                 GameFrame.player2.yVelocity = -super.playerSpeed;
@@ -147,7 +142,7 @@ public class MainPanel extends BasePanel {
         }
 
         //Handel Cheat Codes
-        GameFrame.cheatCodes((int)e.getKeyChar()- 48); // 1 = 48 in ascii
+        GameFrame.cheatCodes((int) e.getKeyChar() - 48); // 1 = 48 in ascii
 
     }
 

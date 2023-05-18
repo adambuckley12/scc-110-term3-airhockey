@@ -16,18 +16,18 @@ import java.util.ArrayList;
 public class SettingsFrame extends BaseFrame {
 
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
+    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/Settings.png");
+    private BufferedImage buffer;
+    private Graphics2D graphics;
+    private boolean rendered = false;
+
+
     public SettingsFrame(BasePanel parentPanel) {
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Game Frame");
 
     }
 
-    private BufferedImage buffer;
-    private Graphics2D graphics;
-    private boolean rendered = false;
-
-
-    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/Settings.png");
     @Override
     public void customPaint(Graphics gr, int width, int height) {
         Text maxGoalsText = new Text(String.valueOf(this.parentPanel.maxGoals), 320, 105, 50, new Color(0f, 0f, 0f, 1.0f), 1);
@@ -71,7 +71,7 @@ public class SettingsFrame extends BaseFrame {
                 }
             }
 
-            window.drawImage(buffer, 0 ,0 , this);//this.getInsets().left
+            window.drawImage(buffer, 0, 0, this);//this.getInsets().left
         }
         shapes.remove(maxGoalsText);
         shapes.remove(audiotext);
@@ -87,33 +87,31 @@ public class SettingsFrame extends BaseFrame {
     public void MouseEvent(MouseEvent e) {
 
         //Max Goals Button
-            //Top Left: 40, 60
-            //Bottom Right: 390, 120
+        //Top Left: 40, 60
+        //Bottom Right: 390, 120
         if (e.getX() >= 40 && e.getX() <= 390 && e.getY() >= 60 && e.getY() <= 120) {
             System.out.println("Max Goals Button Clicked");
             super.parentPanel.maxGoals++;
-            if ( super.parentPanel.maxGoals > 15) {
+            if (super.parentPanel.maxGoals > 15) {
                 super.parentPanel.maxGoals = 1;
             }
 
         }
 
         //Audio Button
-            //Top Left: 40, 160
-            //Bottom Right: 450, 210
+        //Top Left: 40, 160
+        //Bottom Right: 450, 210
         if (e.getX() >= 40 && e.getX() <= 450 && e.getY() >= 160 && e.getY() <= 210) {
             System.out.println("Audio Button Clicked");
             super.parentPanel.audioEnabled = !super.parentPanel.audioEnabled;
         }
 
         //Exit GlobalSettings Button
-            //Top Left: 40, 505
-            //Bottom Right: 390, 570
+        //Top Left: 40, 505
+        //Bottom Right: 390, 570
         if (e.getX() >= 40 && e.getX() <= 390 && e.getY() >= 505 && e.getY() <= 570) {
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
         }
-
-
 
 
     }

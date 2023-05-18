@@ -43,6 +43,67 @@ public class GameFrame extends BaseFrame {
 
     }
 
+    public static void cheatCodes(int cheatNumber) {
+        // if 1 make player 1 larger
+        switch (cheatNumber) {
+            case 1 -> {
+                player1.width += 5;
+                player1.height += 5;
+            }
+            case 2 -> {
+                player2.width += 5;
+                player2.height += 5;
+            }
+            case 3 -> {
+                //make player 1 smaller
+                player1.width -= 5;
+                player1.height -= 5;
+            }
+            case 4 -> {
+                //make player 2 smaller
+                player2.width -= 5;
+                player2.height -= 5;
+            }
+            case 5 ->
+                //make player 1 nearly invisible
+                    player1.colour = new Color(0, 0, 0, 0.02f);
+            case 6 ->
+                //make player 2 nearly invisible
+                    player2.colour = new Color(0, 0, 0, 0.05f);
+            case 7 ->
+                //make player 1 visible
+                    player1.colour = new Color(0, 0, 1, 1f);
+            case 8 ->
+                //make player 2 visible
+                    player2.colour = new Color(1, 0, 0, 1f);
+            case 9 ->
+                //make puck invisible
+                    puck1.colour = new Color(0, 0, 0, 0.02f);
+            case 0 ->
+                //make puck visible
+                    puck1.colour = new Color(0, 0, 0, 1f);
+            case ((int) '`' - 48) -> {
+                //make puck rainbow (change it to random every second for 20 seconds)
+                //make new thread to change colour every second
+                new Thread(() -> {
+                    for (int i = 0; i < 100; i++) {
+                        try {
+                            Thread.sleep(100);
+                            puck1.colour = new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+            }
+
+
+        }
+
+
+    }
+
     @Override
     public void customPaint(Graphics gr, int width, int height) {
         Graphics2D window = (Graphics2D) gr;
@@ -154,7 +215,7 @@ public class GameFrame extends BaseFrame {
             // Detect if collides with anything on path before moving and then move to make smoother?? maybe???
 
             //ONLY NEED TO CALC THIS FOR PUCK ASSUME PLAYER PADDLE DOESNT BOUNCE AS CONTROLLED
-            if (o != this.puck1) continue;
+            if (o != puck1) continue;
             for (BaseShape comparison : shapes) {
                 // make sure that we skip the current object
                 if (comparison.x == o.x && comparison.y == o.y) continue;
@@ -174,7 +235,7 @@ public class GameFrame extends BaseFrame {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
                     //Check if in goal
                     if (comparison == leftGoal) {
-                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
+                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // if center in goal
 
                             leftGoalCount++;
                             leftGoalText.text = String.valueOf(leftGoalCount);
@@ -185,7 +246,8 @@ public class GameFrame extends BaseFrame {
                             break;
                         }
                     } else if (comparison == rightGoal)
-                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
+                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // if in goal
+
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
                             resetPositions(2);
@@ -308,69 +370,6 @@ public class GameFrame extends BaseFrame {
         leftGoalCount = 0;
         rightGoalCount = 0;
         resetPositions(0);
-    }
-
-    public static void cheatCodes(int cheatNumber) {
-        // if 1 make player 1 larger
-        switch (cheatNumber) {
-            case 1 -> {
-                player1.width += 5;
-                player1.height += 5;
-            }
-            case 2 -> {
-                player2.width += 5;
-                player2.height += 5;
-            }
-            case 3 -> {
-                //make player 1 smaller
-                player1.width -= 5;
-                player1.height -= 5;
-            }
-            case 4 -> {
-                //make player 2 smaller
-                player2.width -= 5;
-                player2.height -= 5;
-            }
-            case 5 ->
-                //make player 1 nearly invisible
-                    player1.colour = new Color(0, 0, 0, 0.02f);
-            case 6 ->
-                //make player 2 nearly invisible
-                    player2.colour = new Color(0, 0, 0, 0.05f);
-            case 7 ->
-                //make player 1 visible
-                    player1.colour = new Color(0, 0, 1, 1f);
-            case 8 ->
-                //make player 2 visible
-                    player2.colour = new Color(1, 0, 0, 1f);
-            case 9 ->
-                //make puck invisible
-                    puck1.colour = new Color(0, 0, 0, 0.02f);
-            case 0 ->
-                //make puck visible
-                    puck1.colour = new Color(0, 0, 0, 1f);
-            case ((int) '`' - 48) -> {
-                //make puck rainbow (change it to random every second for 20 seconds)
-                //make new thread to change colour every second
-                new Thread(
-                        () -> {
-                            for (int i = 0; i < 100; i++) {
-                                try {
-                                    Thread.sleep(100);
-                                    puck1.colour = new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                ).start();
-
-            }
-
-
-        }
-
-
     }
 
 }

@@ -14,6 +14,12 @@ import java.util.ArrayList;
 public class WinnerFrame extends BaseFrame {
 
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
+    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/WinnerFrame.png");
+    private BufferedImage buffer;
+    private Graphics2D graphics;
+    private boolean rendered = false;
+
+
     public WinnerFrame(BasePanel parentPanel, int rightPlayerScore, int leftPlayerScore) { //right = left player, left = right player
 
         super.parentPanel = parentPanel;
@@ -23,15 +29,8 @@ public class WinnerFrame extends BaseFrame {
 
     }
 
-    private BufferedImage buffer;
-    private Graphics2D graphics;
-    private boolean rendered = false;
-
-
-    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/WinnerFrame.png");
     @Override
     public void customPaint(Graphics gr, int width, int height) {
-
 
 
         Graphics2D window = (Graphics2D) gr;
@@ -68,22 +67,22 @@ public class WinnerFrame extends BaseFrame {
                 }
             }
 
-            window.drawImage(buffer, 0 ,0 , this);//this.getInsets().left
+            window.drawImage(buffer, 0, 0, this);//this.getInsets().left
         }
 
     }
 
     @Override
     public void updatePositions() {
-    //NOTHING IN WINNING FRAME TO MOVE
+        //NOTHING IN WINNING FRAME TO MOVE
     }
 
     @Override
     public void MouseEvent(MouseEvent e) {
 
         //PLAY AGAIN
-            //Top Left: 40, 360
-            //Bottom Right: 360, 415
+        //Top Left: 40, 360
+        //Bottom Right: 360, 415
 
         if (e.getX() >= 35 && e.getX() <= 360 && e.getY() >= 334 && e.getY() <= 400) {
             System.out.println("Play Again Button Clicked");
@@ -91,8 +90,8 @@ public class WinnerFrame extends BaseFrame {
         }
 
         //Settings Button
-            //Top Left: 35, 420
-            //Bottom Right: 320, 480
+        //Top Left: 35, 420
+        //Bottom Right: 320, 480
         if (e.getX() >= 35 && e.getX() <= 320 && e.getY() >= 420 && e.getY() <= 480) {
             System.out.println("Settings Button Clicked");
             super.parentPanel.currentFrame = new SettingsFrame(super.parentPanel);
@@ -100,8 +99,8 @@ public class WinnerFrame extends BaseFrame {
 
 
         //Exit GlobalSettings Button
-            //Top Left: 40, 540
-            //Bottom Right: 390, 570
+        //Top Left: 40, 540
+        //Bottom Right: 390, 570
         if (e.getX() >= 35 && e.getX() <= 390 && e.getY() >= 505 && e.getY() <= 570) {
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
         }

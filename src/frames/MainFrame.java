@@ -11,18 +11,15 @@ import java.util.ArrayList;
 
 public class MainFrame extends BaseFrame {
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
-    public MainFrame(BasePanel parentPanel) {
-        super.parentPanel = parentPanel;
-        super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Main Menu");
-    }
-
-
+    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/MainMenuAirHockey.png");
     private BufferedImage buffer;
     private Graphics2D graphics;
     private boolean rendered = false;
 
-    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/MainMenuAirHockey.png");
-
+    public MainFrame(BasePanel parentPanel) {
+        super.parentPanel = parentPanel;
+        super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Main Menu");
+    }
 
     @Override
     public void customPaint(Graphics gr, int width, int height) {
@@ -47,7 +44,7 @@ public class MainFrame extends BaseFrame {
                     graphics.drawImage(backgroundImage, 0, 0, width, height, 0, 0, backgroundImage.getWidth(null), backgroundImage.getHeight(null), null);
 
             }
-            window.drawImage(buffer, 0 ,0 , this);
+            window.drawImage(buffer, 0, 0, this);
         }
 
     }
@@ -77,12 +74,10 @@ public class MainFrame extends BaseFrame {
         if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 140 && e.getY() <= 200) {
             System.out.println("Start button pressed");
             super.parentPanel.currentFrame = new GameFrame(super.parentPanel);
-        }
-        else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 285 && e.getY() <= 345) {
+        } else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 285 && e.getY() <= 345) {
             System.out.println("GlobalSettings button pressed");
             super.parentPanel.currentFrame = new SettingsFrame(super.parentPanel);
-        }
-        else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 420 && e.getY() <= 480) {
+        } else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 420 && e.getY() <= 480) {
             System.out.println("Exit button pressed");
             System.exit(0);
         }

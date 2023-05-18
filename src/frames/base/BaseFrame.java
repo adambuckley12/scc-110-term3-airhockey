@@ -2,11 +2,13 @@ package frames.base;
 
 import panels.base.BasePanel;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.*;
-import javax.sound.sampled.*;
+import java.io.File;
 
 
 public abstract class BaseFrame extends JFrame {

@@ -1,25 +1,22 @@
 package shapes.base;
 
-import shapes.Rectangle;
-import shapes.Sphere;
-
 import java.awt.*;
 
 public abstract class BaseShape {
     // position:
     // x,y
-        // This the centre/
+    // This the centre/
 
     // rotation
-        // default 0 - to 359
+    // default 0 - to 359
 
     // height,width
-        // >0
+    // >0
 
 
     // Restrictions:
-        // Sphere will be a true circle
-        // ?
+    // Sphere will be a true circle
+    // ?
 
     // Coordinates
     public int x;
