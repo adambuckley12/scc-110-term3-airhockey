@@ -39,4 +39,4 @@ Realistic accurate bounces and collisons, low friction simulated, and loss of en
 
 ## Cheat Codes!
 
-TODO: CODE AND ADD TO README
+*keys 1-9 and \` now perform "cheats" from changing player size, becoming invisible, invisible puck and a rainbow puck!*
