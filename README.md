@@ -3,13 +3,13 @@
 Adam Buckley Scc 110 Term 3 Air Hockey Java game project repository:
 
 
-# Compile and Run:
+# Compile and Run via a CLI:
 
 *Using included run script:*
 *Navigate to inside project directory:*
 
     chmod +x run.sh #IGNORE THIS LINE IF USING WINDOWS.
-    ./run.sh
+    ./run.sh 
 
 ***or***
 
@@ -39,4 +39,4 @@ Realistic accurate bounces and collisons, low friction simulated, and loss of en
 
 ## Cheat Codes!
 
-TODO: CODE AND ADD TO README
+*keys 1-9 and \` now perform "cheats" from changing player size, becoming invisible, invisible puck and a rainbow puck!*
