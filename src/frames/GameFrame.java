@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GameFrame extends BaseFrame {
     public static final Sphere player1 = new Sphere(50, 300, 0, 70, 1, new Color(0f, 0.2f, 0.9f, 1f), 0, 0);
     public static final Sphere player2 = new Sphere(850, 300, 0, 70, 1, new Color(1f, 0.2f, 0f, 1f), 0, 0);
-    public final Sphere puck1 = new Sphere(451, 300, 0, 45, 2, new Color(0f, 0f, 0f, 1f), 0, 0);
+    public static final Sphere puck1 = new Sphere(451, 300, 0, 45, 2, new Color(0f, 0f, 0f, 1f), 0, 0);
     public final Rectangle leftGoal = new Rectangle(0, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
     public final Rectangle rightGoal = new Rectangle(900, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
@@ -28,6 +28,7 @@ public class GameFrame extends BaseFrame {
     private BufferedImage buffer;
     private Graphics2D graphics;
     private boolean rendered = false;
+
     public GameFrame(BasePanel parentPanel) {
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Game Frame");
@@ -159,7 +160,7 @@ public class GameFrame extends BaseFrame {
                 if (comparison.x == o.x && comparison.y == o.y) continue;
 
                 if (comparison instanceof Sphere) {
-                    if (((Sphere)o).collides((Sphere)comparison)) {
+                    if (((Sphere) o).collides((Sphere) comparison)) {
                         // the point at which they touch
                         o.x = initialX;
                         o.y = initialY;
@@ -172,7 +173,7 @@ public class GameFrame extends BaseFrame {
                 } else if (comparison instanceof Rectangle) {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
                     //Check if in goal
-                    if (comparison == leftGoal){
+                    if (comparison == leftGoal) {
                         if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
 
                             leftGoalCount++;
@@ -180,20 +181,17 @@ public class GameFrame extends BaseFrame {
                             resetPositions(1);
                             super.playSound("src/assets/audio/applause.wav");
 
-                            if (leftGoalCount >= super.parentPanel.maxGoals)
-                                gameWon(2);
+                            if (leftGoalCount >= super.parentPanel.maxGoals) gameWon(2);
                             break;
                         }
-                    }
-                    else if (comparison == rightGoal)
+                    } else if (comparison == rightGoal)
                         if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
                             resetPositions(2);
 
                             super.playSound("src/assets/audio/applause.wav");
-                            if (rightGoalCount >= super.parentPanel.maxGoals)
-                                gameWon(1);
+                            if (rightGoalCount >= super.parentPanel.maxGoals) gameWon(1);
                             break;
                         }
 
@@ -309,6 +307,70 @@ public class GameFrame extends BaseFrame {
         super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
         leftGoalCount = 0;
         rightGoalCount = 0;
+        resetPositions(0);
+    }
+
+    public static void cheatCodes(int cheatNumber) {
+        // if 1 make player 1 larger
+        switch (cheatNumber) {
+            case 1 -> {
+                player1.width += 5;
+                player1.height += 5;
+            }
+            case 2 -> {
+                player2.width += 5;
+                player2.height += 5;
+            }
+            case 3 -> {
+                //make player 1 smaller
+                player1.width -= 5;
+                player1.height -= 5;
+            }
+            case 4 -> {
+                //make player 2 smaller
+                player2.width -= 5;
+                player2.height -= 5;
+            }
+            case 5 ->
+                //make player 1 nearly invisible
+                    player1.colour = new Color(0, 0, 0, 0.02f);
+            case 6 ->
+                //make player 2 nearly invisible
+                    player2.colour = new Color(0, 0, 0, 0.05f);
+            case 7 ->
+                //make player 1 visible
+                    player1.colour = new Color(0, 0, 1, 1f);
+            case 8 ->
+                //make player 2 visible
+                    player2.colour = new Color(1, 0, 0, 1f);
+            case 9 ->
+                //make puck invisible
+                    puck1.colour = new Color(0, 0, 0, 0.02f);
+            case 0 ->
+                //make puck visible
+                    puck1.colour = new Color(0, 0, 0, 1f);
+            case ((int) '`' - 48) -> {
+                //make puck rainbow (change it to random every second for 20 seconds)
+                //make new thread to change colour every second
+                new Thread(
+                        () -> {
+                            for (int i = 0; i < 100; i++) {
+                                try {
+                                    Thread.sleep(100);
+                                    puck1.colour = new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                ).start();
+
+            }
+
+
+        }
+
+
     }
 
 }

@@ -146,7 +146,8 @@ public class MainPanel extends BasePanel {
             }
         }
 
-
+        //Handel Cheat Codes
+        GameFrame.cheatCodes((int)e.getKeyChar()- 48); // 1 = 48 in ascii
 
     }
 

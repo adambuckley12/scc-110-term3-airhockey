@@ -42,7 +42,6 @@ public class Sphere extends BaseShape {
 
 		return distance <= (double) Math.abs(width/2 + sphere.width/2);
 
-
 	}
 
 }
