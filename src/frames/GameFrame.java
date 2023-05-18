@@ -15,33 +15,25 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class GameFrame extends BaseFrame {
-    private final ArrayList<BaseShape> shapes = new ArrayList<>();
     public static final Sphere player1 = new Sphere(50, 300, 0, 70, 1, new Color(0f, 0.2f, 0.9f, 1f), 0, 0);
     public static final Sphere player2 = new Sphere(850, 300, 0, 70, 1, new Color(1f, 0.2f, 0f, 1f), 0, 0);
-
     public final Sphere puck1 = new Sphere(451, 300, 0, 45, 2, new Color(0f, 0f, 0f, 1f), 0, 0);
-
     public final Rectangle leftGoal = new Rectangle(0, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
     public final Rectangle rightGoal = new Rectangle(900, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
-
+    private final ArrayList<BaseShape> shapes = new ArrayList<>();
+    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/AirHockeyTableImage-highres.png");
     public int leftGoalCount = 0;
-    public int rightGoalCount = 0;
-
     private final Text leftGoalText = new Text(String.valueOf(leftGoalCount), 100, 100, 50, new Color(0f, 0f, 0f, 1f), 1);
+    public int rightGoalCount = 0;
     private final Text rightGoalText = new Text(String.valueOf(rightGoalCount), 800, 100, 50, new Color(0f, 0f, 0f, 1f), 2);
-
-    private float coeffRestitution = 0.9f;
-
-
+    private final float coeffRestitution = 0.9f;
+    private BufferedImage buffer;
+    private Graphics2D graphics;
+    private boolean rendered = false;
     public GameFrame(BasePanel parentPanel) {
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Game Frame");
 
-        // place shapes
-
-
-        // test color
-        shapes.add(new Rectangle(451, 300, 0, 872, 570, 0, new Color(0f, 0f, 0.1f, .1f)));
         shapes.add(leftGoal);
         shapes.add(rightGoal);
         shapes.add(player1);
@@ -50,18 +42,7 @@ public class GameFrame extends BaseFrame {
         shapes.add(leftGoalText);
         shapes.add(rightGoalText);
 
-        // right left borders are 15px
-        // top bottom borders are 15px
-
-        // 900 - 30 / 2
-        // 870
-        // 435
     }
-
-    private BufferedImage buffer;
-    private Graphics2D graphics;
-    private boolean rendered = false;
-    private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/AirHockeyTableImage-highres.png");
 
     @Override
     public void customPaint(Graphics gr, int width, int height) {
@@ -158,7 +139,7 @@ public class GameFrame extends BaseFrame {
             // apply friction to x and y separate as same as adding friction on total velocity
 
             //TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
-            double friction = 0.0005; // 0.2% friction
+            double friction = 0.001; // 0.2% friction
 
             o.xVelocity *= (1.0 - friction);
             o.yVelocity *= (1.0 - friction);
@@ -188,9 +169,7 @@ public class GameFrame extends BaseFrame {
                         Physics.deflect(o, comparison);
                         //write code to play sound from file here
 
-                        super.playSound("src/assets/audio/hit.wav");
-
-
+                        super.playSound("../../assets/audio/hit.wav");
                     }
                 } else if (comparison instanceof Rectangle) {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
@@ -204,15 +183,7 @@ public class GameFrame extends BaseFrame {
                             super.playSound("src/assets/audio/applause.wav");
 
                             if (leftGoalCount >= super.parentPanel.maxGoals)
-                            {
-                                super.parentPanel.winner = 2;
-                                super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
-                                leftGoalCount = 0;
-                                rightGoalCount = 0;
-
-                            }
-
-
+                                gameWon(2);
 
                             break;
                         }
@@ -224,43 +195,12 @@ public class GameFrame extends BaseFrame {
 
                             super.playSound("src/assets/audio/applause.wav");
                             if (rightGoalCount >= super.parentPanel.maxGoals)
-                            {
-                                super.parentPanel.winner = 1;
-
-                                super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
-                                leftGoalCount = 0;
-                                rightGoalCount = 0;
-
-
-                            }
+                                gameWon(1);
                             break;
                         }
-                    //If its inline with a goal allow it to pass through
-                    if (o.y < 300 + 100 && o.y > 300 - 100) {
-                        continue;
-                    }
 
-                    int radius = o.width / 2;
-                    int border = 16;
-
-
-                    if (o.x + radius > 900 - border) {
-                        o.x = 900 - 17 - radius;
-                        o.xVelocity *= -1;
-                    }
-                    if (o.x - radius < border) {
-                        o.x = 17 + radius; // get it just inside by
-                        o.xVelocity *= -1;
-                    }
-                    if (o.y + radius > 600 - border) {
-                        o.y = 600 - 17 - radius;
-                        o.yVelocity *= -1;
-                    }
-                    if (o.y - radius < border) {
-                        o.y = 17 + radius;
-                        o.yVelocity *= -1;
-                    }
-
+                    //deflect off arena edge if in contact and not inline with goal
+                    ballDeflectionOffArenaEdge(o);
 
                 }
             }
@@ -282,24 +222,19 @@ public class GameFrame extends BaseFrame {
 
     }
 
-    public void resetPositions(int scorer) {
+    private void resetPositions(int scorer) {
 
         //0 for none, 1 for left, 2 for right
 
-        if (scorer == 0)
-        {
+        if (scorer == 0) {
             //move puck to center
             puck1.x = 450;
             puck1.y = 300;
-        }
-        else if (scorer == 2)
-        {
+        } else if (scorer == 2) {
             //move puck to right of center
             puck1.x = 500;
             puck1.y = 300;
-        }
-        else if (scorer == 1)
-        {
+        } else if (scorer == 1) {
             //move puck to left
             puck1.x = 400;
             puck1.y = 300;
@@ -317,12 +252,64 @@ public class GameFrame extends BaseFrame {
         puck1.xVelocity = 0;
         puck1.yVelocity = 0;
 
-
         player1.xVelocity = 0;
         player1.yVelocity = 0;
 
         player2.xVelocity = 0;
         player2.yVelocity = 0;
+    }
+
+    private void ballDeflectionOffArenaEdge(BaseShape o) {
+
+        //If its inline with a goal allow it to pass through
+        if (o.y < 300 + 100 && o.y > 300 - 100) {
+            return;
+        }
+
+        int radius = o.width / 2;
+        int border = 16;
+        boolean didCollide = false;
+
+
+        if (o.x + radius > 900 - border) {
+            o.x = 900 - 17 - radius;
+            o.xVelocity *= -1;
+            didCollide = true;
+
+        }
+        if (o.x - radius < border) {
+            o.x = 17 + radius; // get it just inside by
+            o.xVelocity *= -1;
+            didCollide = true;
+        }
+        if (o.y + radius > 600 - border) {
+            o.y = 600 - 17 - radius;
+            o.yVelocity *= -1;
+            didCollide = true;
+        }
+        if (o.y - radius < border) {
+            o.y = 17 + radius;
+            o.yVelocity *= -1;
+            didCollide = true;
+        }
+
+        if (didCollide) {
+            super.playSound("src/assets/audio/bounce.wav");
+
+            //Assume small loss of energy on bounce. (sound and heat)
+            o.xVelocity *= 0.95;
+            o.yVelocity *= 0.95;
+        }
+
+
+    }
+
+    private void gameWon(int winner) {
+        super.parentPanel.winner = winner;
+        super.playSound("src/assets/audio/applause.wav");
+        super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
+        leftGoalCount = 0;
+        rightGoalCount = 0;
     }
 
 }

@@ -43,7 +43,8 @@ public class MainPanel extends BasePanel {
 
     /**
      * Sets the height of the window, and the currently displayed frame.
-     * @param width the new width of this component in pixels
+     *
+     * @param width  the new width of this component in pixels
      * @param height the new height of this component in pixels
      */
     public void setInitialSize(int width, int height) {
@@ -52,20 +53,20 @@ public class MainPanel extends BasePanel {
 
         super.setSize(width, height);
 
-        if(super.currentFrame != null) {
+        if (super.currentFrame != null) {
             Insets insets = super.currentFrame.getInsets();
             int frameWidth = width + insets.left + insets.right;
             int frameHeight = height + insets.top + insets.bottom;
             super.currentFrame.setSize(frameWidth, frameHeight);
         }
-     }
+    }
 
 
-     /**
+    /**
      * Stolen code from GameArena provided file
      */
 
-	public void paint(Graphics gr) {
+    public void paint(Graphics gr) {
         super.currentFrame.customPaint(gr, width, height);
     }
 
@@ -79,12 +80,13 @@ public class MainPanel extends BasePanel {
 
                 super.currentFrame.updatePositions();
 
-				this.repaint();
-				Thread.sleep(10);
-			}
-		} catch (InterruptedException ignored) {}
+                this.repaint();
+                Thread.sleep(10);
+            }
+        } catch (InterruptedException ignored) {
+        }
 
-		if (super.currentFrame != null)
+        if (super.currentFrame != null)
             super.currentFrame.dispatchEvent(new WindowEvent(super.currentFrame, WindowEvent.WINDOW_CLOSING));
     }
 
@@ -94,10 +96,6 @@ public class MainPanel extends BasePanel {
      */
     @Override
     public void keyTyped(KeyEvent e) {
-        System.out.println("Key typed: " + e.getKeyChar());
-
-
-
 
     }
 
@@ -105,42 +103,43 @@ public class MainPanel extends BasePanel {
     @Override
     public void keyPressed(KeyEvent e) {
 
+
         if (e.getKeyChar() == 'w') {
             //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player1.yVelocity = -5;
+            GameFrame.player1.yVelocity = -super.playerSpeed;
 
         }
         if (e.getKeyChar() == 's') {
             //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player1.yVelocity = 5;
+            GameFrame.player1.yVelocity = super.playerSpeed;
         }
         if (e.getKeyChar() == 'a') {
             //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player1.xVelocity = -5;
+            GameFrame.player1.xVelocity = -super.playerSpeed;
         }
         if (e.getKeyChar() == 'd') {
             //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player1.xVelocity = 5;
+            GameFrame.player1.xVelocity = super.playerSpeed;
         }
 
         // same but with arrow keys for player 2
 
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player2.yVelocity = -5;
+            GameFrame.player2.yVelocity = -super.playerSpeed;
 
         }
         if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player2.yVelocity = 5;
+            GameFrame.player2.yVelocity = super.playerSpeed;
         }
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player2.xVelocity = -5;
+            GameFrame.player2.xVelocity = -super.playerSpeed;
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player2.xVelocity = 5;
+            GameFrame.player2.xVelocity = super.playerSpeed;
         }
 
     }
@@ -200,6 +199,7 @@ public class MainPanel extends BasePanel {
         this.currentFrame.MouseEvent(e);
 
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
 

@@ -14,11 +14,12 @@ import java.util.ArrayList;
 public class WinnerFrame extends BaseFrame {
 
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
-    public WinnerFrame(BasePanel parentPanel, int leftScore, int rightScore) {
+    public WinnerFrame(BasePanel parentPanel, int rightPlayerScore, int leftPlayerScore) { //right = left player, left = right player
+
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Winner Frame");
         //add score from game frame
-        shapes.add(new Text("Score: " + leftScore + ":" + rightScore, 70, 200, 60, new Color(0f, 0f, 0f, 1f), 1));
+        shapes.add(new Text("Score: " + leftPlayerScore + ":" + rightPlayerScore, 70, 200, 60, new Color(0f, 0f, 0f, 1f), 1));
 
     }
 
