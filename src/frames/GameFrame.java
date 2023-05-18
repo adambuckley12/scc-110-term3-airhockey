@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class GameFrame extends BaseFrame {
     public static final Sphere player1 = new Sphere(50, 300, 0, 70, 1, new Color(0f, 0.2f, 0.9f, 1f), 0, 0);
@@ -26,7 +25,6 @@ public class GameFrame extends BaseFrame {
     private final Text leftGoalText = new Text(String.valueOf(leftGoalCount), 100, 100, 50, new Color(0f, 0f, 0f, 1f), 1);
     public int rightGoalCount = 0;
     private final Text rightGoalText = new Text(String.valueOf(rightGoalCount), 800, 100, 50, new Color(0f, 0f, 0f, 1f), 2);
-    private final float coeffRestitution = 0.9f;
     private BufferedImage buffer;
     private Graphics2D graphics;
     private boolean rendered = false;
@@ -174,7 +172,7 @@ public class GameFrame extends BaseFrame {
                 } else if (comparison instanceof Rectangle) {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
                     //Check if in goal
-                    if (comparison == leftGoal)
+                    if (comparison == leftGoal){
                         if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
 
                             leftGoalCount++;
@@ -184,10 +182,10 @@ public class GameFrame extends BaseFrame {
 
                             if (leftGoalCount >= super.parentPanel.maxGoals)
                                 gameWon(2);
-
                             break;
                         }
-                    if (comparison == rightGoal)
+                    }
+                    else if (comparison == rightGoal)
                         if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) {
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
@@ -261,7 +259,7 @@ public class GameFrame extends BaseFrame {
 
     private void ballDeflectionOffArenaEdge(BaseShape o) {
 
-        //If its inline with a goal allow it to pass through
+        //If it's inline with a goal allow it to pass through
         if (o.y < 300 + 100 && o.y > 300 - 100) {
             return;
         }
@@ -297,8 +295,8 @@ public class GameFrame extends BaseFrame {
             super.playSound("src/assets/audio/bounce.wav");
 
             //Assume small loss of energy on bounce. (sound and heat)
-            o.xVelocity *= 0.95;
-            o.yVelocity *= 0.95;
+            o.xVelocity *= super.parentPanel.coefRestitution;
+            o.yVelocity *= super.parentPanel.coefRestitution;
         }
 
 

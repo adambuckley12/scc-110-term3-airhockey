@@ -20,7 +20,6 @@ public class SettingsFrame extends BaseFrame {
         super.parentPanel = parentPanel;
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Game Frame");
 
-        //shapes.add(new Text("GlobalSettings", 10, 10, 10, "000000", 1));
     }
 
     private BufferedImage buffer;

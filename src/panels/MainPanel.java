@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.security.Key;
 
 public class MainPanel extends BasePanel {
 
@@ -103,44 +104,49 @@ public class MainPanel extends BasePanel {
     @Override
     public void keyPressed(KeyEvent e) {
 
+        char key = e.getKeyChar();
 
-        if (e.getKeyChar() == 'w') {
-            //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player1.yVelocity = -super.playerSpeed;
+        switch (key) {
+            case 'w' -> {
+
+                GameFrame.player1.yVelocity = -super.playerSpeed;
+            }
+            case 's' -> {
+
+                GameFrame.player1.yVelocity = super.playerSpeed;
+            }
+            case 'a' -> {
+
+                GameFrame.player1.xVelocity = -super.playerSpeed;
+            }
+            case 'd' -> {
+
+                GameFrame.player1.xVelocity = super.playerSpeed;
+            }
 
         }
-        if (e.getKeyChar() == 's') {
-            //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player1.yVelocity = super.playerSpeed;
-        }
-        if (e.getKeyChar() == 'a') {
-            //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player1.xVelocity = -super.playerSpeed;
-        }
-        if (e.getKeyChar() == 'd') {
-            //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player1.xVelocity = super.playerSpeed;
-        }
-
         // same but with arrow keys for player 2
+        int keyCode = e.getKeyCode();
+        switch (keyCode){
+            case KeyEvent.VK_UP -> {
 
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player2.yVelocity = -super.playerSpeed;
+                GameFrame.player2.yVelocity = -super.playerSpeed;
+            }
+            case KeyEvent.VK_DOWN -> {
 
+                GameFrame.player2.yVelocity = super.playerSpeed;
+            }
+            case KeyEvent.VK_LEFT -> {
+
+                GameFrame.player2.xVelocity = -super.playerSpeed;
+            }
+            case KeyEvent.VK_RIGHT -> {
+
+                GameFrame.player2.xVelocity = super.playerSpeed;
+            }
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player2.yVelocity = super.playerSpeed;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player2.xVelocity = -super.playerSpeed;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player2.xVelocity = super.playerSpeed;
-        }
+
+
 
     }
 

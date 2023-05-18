@@ -24,4 +24,6 @@ public abstract class BasePanel extends JPanel implements Runnable, KeyListener,
 
     public int winner = 0;
 
+    public float coefRestitution = 0.95f;
+
 }
