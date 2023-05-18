@@ -167,7 +167,7 @@ public class GameFrame extends BaseFrame {
                         Physics.deflect(o, comparison);
                         //write code to play sound from file here
 
-                        super.playSound("../../assets/audio/hit.wav");
+                        super.playSound("src/assets/audio/hit.wav");
                     }
                 } else if (comparison instanceof Rectangle) {
                     //TODO Maybe assume non elastic collisions? (very big maybe)
