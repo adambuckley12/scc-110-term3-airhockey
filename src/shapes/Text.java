@@ -23,11 +23,8 @@ public class Text extends BaseShape {
         super.y = y;
 
         super.width = size;
-
-
         super.layer = layer;
         super.colour = colour;
-
         super.text = text;
 
     }

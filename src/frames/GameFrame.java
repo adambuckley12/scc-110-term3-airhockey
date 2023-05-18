@@ -114,7 +114,7 @@ public class GameFrame extends BaseFrame {
             buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             graphics = buffer.createGraphics();
 
-            //completed this initialisation, so that we don't do it again
+            // Completed this initialization, so that we don't do it again
             rendered = true;
         }
 
@@ -149,7 +149,7 @@ public class GameFrame extends BaseFrame {
     @Override
     public void updatePositions() {
 
-        // Make Sure Players are kept bounds. include radius in calculations
+        // Make sure players are kept within bounds, include radius in calculations
 
         if (player1.x + player1.width / 2 > 450) {
             player1.x = 450 - player1.width / 2;
@@ -183,22 +183,21 @@ public class GameFrame extends BaseFrame {
             player2.y = 600 - player2.height / 2;
         }
 
-
         for (BaseShape o : shapes) {
-            if (o instanceof Rectangle) continue; //no need to update positions of rectangles they are static
+            if (o instanceof Rectangle) continue; // No need to update positions of rectangles as they are static
 
             // Taking current velocity
-            // Adding Friction (0.2% of current velocity)
+            // Adding friction (0.2% of current velocity)
             // Updating velocity
-            // determining new coords.
-            // collisions
-            // goal etc
+            // Determining new coordinates
+            // Collisions
+            // Goals, etc.
 
-            // x velocity
-            // y velocity
-            // apply friction to x and y separate as same as adding friction on total velocity
+            // X velocity
+            // Y velocity
+            // Apply friction to X and Y separately, as same as adding friction on total velocity
 
-            //TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
+            // TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
             double friction = 0.001; // 0.2% friction
 
             o.xVelocity *= (1.0 - friction);
@@ -207,35 +206,35 @@ public class GameFrame extends BaseFrame {
             int initialX = o.x;
             int initialY = o.y;
 
-            o.x += Math.round(o.xVelocity); //900, 10d = 910
+            o.x += Math.round(o.xVelocity); // 900, 10d = 910
             o.y += Math.round(o.yVelocity);
 
-            // TODO another setting - max speed maybe???
+            // TODO: another setting - max speed maybe???
 
-            // Detect if collides with anything on path before moving and then move to make smoother?? maybe???
+            // Detect if collides with anything on the path before moving and then move to make it smoother?? maybe???
 
-            //ONLY NEED TO CALC THIS FOR PUCK ASSUME PLAYER PADDLE DOESNT BOUNCE AS CONTROLLED
+            // ONLY NEED TO CALCULATE THIS FOR PUCK ASSUME PLAYER PADDLE DOESN'T BOUNCE AS CONTROLLED
             if (o != puck1) continue;
             for (BaseShape comparison : shapes) {
-                // make sure that we skip the current object
+                // Make sure that we skip the current object
                 if (comparison.x == o.x && comparison.y == o.y) continue;
 
                 if (comparison instanceof Sphere) {
                     if (((Sphere) o).collides((Sphere) comparison)) {
-                        // the point at which they touch
+                        // The point at which they touch
                         o.x = initialX;
                         o.y = initialY;
-                        // deflect
+                        // Deflect
                         Physics.deflect(o, comparison);
-                        //write code to play sound from file here
+                        // Write code to play sound from file here
 
                         super.playSound("src/assets/audio/hit.wav");
                     }
                 } else if (comparison instanceof Rectangle) {
-                    //TODO Maybe assume non elastic collisions? (very big maybe)
-                    //Check if in goal
+                    // TODO: Maybe assume non-elastic collisions? (Very big maybe)
+                    // Check if in goal
                     if (comparison == leftGoal) {
-                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // if center in goal
+                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If center in goal
 
                             leftGoalCount++;
                             leftGoalText.text = String.valueOf(leftGoalCount);
@@ -245,8 +244,8 @@ public class GameFrame extends BaseFrame {
                             if (leftGoalCount >= super.parentPanel.maxGoals) gameWon(2);
                             break;
                         }
-                    } else if (comparison == rightGoal)
-                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // if in goal
+                    } else if (comparison == rightGoal) {
+                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If in goal
 
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
@@ -256,23 +255,26 @@ public class GameFrame extends BaseFrame {
                             if (rightGoalCount >= super.parentPanel.maxGoals) gameWon(1);
                             break;
                         }
+                    }
 
-                    //deflect off arena edge if in contact and not inline with goal
+                    // Deflect off arena edge if in contact and not in line with goal
                     ballDeflectionOffArenaEdge(o);
-
                 }
             }
         }
-
     }
+
 
     @Override
     public void MouseEvent(MouseEvent e) {
 
         //Menu Exit Button:
         if (e.getX() > 775 && e.getY() < 58) {
-            //super.playSound("src/assets/audio/click.wav");
+            // If the mouse click is within the exit button area
+            // Go back to the main frame
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
+
+            // Reset positions and goal counts
             resetPositions(0);
             leftGoalCount = 0;
             rightGoalCount = 0;
@@ -282,31 +284,30 @@ public class GameFrame extends BaseFrame {
 
     private void resetPositions(int scorer) {
 
-        //0 for none, 1 for left, 2 for right
+        // 0 for none, 1 for left, 2 for right
 
         if (scorer == 0) {
-            //move puck to center
+            // Move the puck to the center
             puck1.x = 450;
             puck1.y = 300;
         } else if (scorer == 2) {
-            //move puck to right of center
+            // Move the puck to the right of center
             puck1.x = 500;
             puck1.y = 300;
         } else if (scorer == 1) {
-            //move puck to left
+            // Move the puck to the left
             puck1.x = 400;
             puck1.y = 300;
         }
 
-
-        //move players to left and right
+        // Move players to the left and right
         player1.x = 50;
         player1.y = 300;
 
         player2.x = 850;
         player2.y = 300;
 
-        //reset velocities
+        // Reset velocities
         puck1.xVelocity = 0;
         puck1.yVelocity = 0;
 
@@ -319,7 +320,7 @@ public class GameFrame extends BaseFrame {
 
     private void ballDeflectionOffArenaEdge(BaseShape o) {
 
-        //If it's inline with a goal allow it to pass through
+        // If the puck is inline with a goal, allow it to pass through
         if (o.y < 300 + 100 && o.y > 300 - 100) {
             return;
         }
@@ -328,15 +329,14 @@ public class GameFrame extends BaseFrame {
         int border = 16;
         boolean didCollide = false;
 
-
+        // Check for collision with the arena edges
         if (o.x + radius > 900 - border) {
             o.x = 900 - 17 - radius;
             o.xVelocity *= -1;
             didCollide = true;
-
         }
         if (o.x - radius < border) {
-            o.x = 17 + radius; // get it just inside by
+            o.x = 17 + radius; // Get it just inside the border
             o.xVelocity *= -1;
             didCollide = true;
         }
@@ -354,22 +354,25 @@ public class GameFrame extends BaseFrame {
         if (didCollide) {
             super.playSound("src/assets/audio/bounce.wav");
 
-
-            //Assume small loss of energy on bounce. (sound and heat)
+            // Assume a small loss of energy on bounce (sound and heat)
             o.xVelocity *= super.parentPanel.coefRestitution;
             o.yVelocity *= super.parentPanel.coefRestitution;
         }
-
-
     }
 
     private void gameWon(int winner) {
+        // Set the winner in the parent panel
         super.parentPanel.winner = winner;
+
+        // Play applause sound
         super.playSound("src/assets/audio/applause.wav");
+
+        // Go to the winner frame and reset goal counts and positions
         super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
         leftGoalCount = 0;
         rightGoalCount = 0;
         resetPositions(0);
     }
+
 
 }
