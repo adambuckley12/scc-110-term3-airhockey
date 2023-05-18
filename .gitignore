@@ -32,3 +32,5 @@ bin/
 .idea/workspace.xml
 .idea/discord.xml
 .idea/workspace.xml
+.idea/workspace.xml
+*.xml

@@ -49,7 +49,6 @@ public class Rectangle extends BaseShape {
 	 */
 	@Override
 	public boolean collides(Sphere sphere) {
-		//TODO: Sort this out?
 		return sphere.within(this) != 0;
 	}
 
@@ -59,7 +58,6 @@ public class Rectangle extends BaseShape {
 	 * @return true if this sphere is fully within the given rectangle, false otherwise.
 	 */
 	@Override
-	//TODO: Change type to rectangle once implemented
 	//TODO: Look into using rotation for weird maps. (if can be bothered to add unique maps as extra)
 	public int within(Rectangle rectangle) {
 		// Y collision parameters:
