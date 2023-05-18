@@ -1,8 +1,42 @@
-# scc-110-term3-airhockey
+# SCC 110 Air Hockey Project
 
-Term 3 SCC110 Project.
+Adam Buckley Scc 110 Term 3 Air Hockey Java game project repository:
 
-Air Hockey Game:
-Select amount of Spheres, sphere speed and max score
-....
-//TODO
+
+# Compile and Run:
+
+*Using included run script:*
+*Navigate to inside project directory:*
+
+    chmod +x run.sh #IGNORE THIS LINE IF USING WINDOWS.
+    ./run.sh
+
+***or***
+
+*In **/src/** directory:*
+
+    javac Main.java
+    
+*exit **/src/** directory and then to run:*
+
+    java -cp ./src/ Main
+
+
+
+## Features:
+
+Two player Air Hockey game. 
+
+**User Friendly Controls:**
+*"WASD"* for Player 1 (left side).
+*Arrow keys for* Player 2 (right side).
+
+Goals to win can be adjusted in the settings window. (1-15). Ends the game and shows winner once reached.
+
+Audio by default is muted. Can be enabled under settings.
+
+Realistic accurate bounces and collisons, low friction simulated, and loss of energy on wall and puck collison.
+
+## Cheat Codes!
+
+TODO: CODE AND ADD TO README
