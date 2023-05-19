@@ -18,9 +18,10 @@ public abstract class BasePanel extends JPanel implements Runnable, KeyListener,
     public double playerSpeed = 6;
     public int winner = 0;
     public float coefRestitution = 0.9f;
-    public float coefFriction = 0.001f;
+    public float coefFriction = 0.0025f;
 
     protected int width;
     protected int height;
+
 
 }

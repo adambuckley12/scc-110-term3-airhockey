@@ -7,9 +7,14 @@ public class Physics {
 
     public static void deflect(BaseShape puck, BaseShape paddle) {
 
-        // Calculate initial momentum of the spheres... We assume unit mass here. //TODO Allow for mass of spheres as a setting and implement here maybe???
+        double coefRestitutionBetween2Spheres = 0.15f; // As paddle is a fixed point due to hand.
+        // We calculate the change in momentum of the puck caused by the impulse and force from the hand and collision.#
+        // and apply it to the paddle but also apply a coefficient of restitution to account for it will bounce even if paddle is stationary
+        // both energy and momentum are not conserved in this system due to the hand applying a force + loss of heat and sound energy.
+
+        // Calculate initial momentum of the spheres... We assume unit mass here.
         double puckInitialMomentum = Math.sqrt(puck.xVelocity * puck.xVelocity + puck.yVelocity * puck.yVelocity);
-        double paddleInitialMomentum = Math.sqrt((paddle.xVelocity * paddle.xVelocity + paddle.yVelocity * paddle.yVelocity) * 8); //ASSUMING PUCK HAS MUCH LARGER MASS AS WOULD HAVE A HAND IN IT AND FORCE APPLIED
+        double paddleInitialMomentum = Math.sqrt((paddle.xVelocity * paddle.xVelocity + paddle.yVelocity * paddle.yVelocity) * 9); //assume due to force the pucks mass is 4 times that of the paddle.
         // calculate motion vectors
         double[] puckTrajectory = {puck.xVelocity, puck.yVelocity};
         double[] paddleTrajectory = {paddle.xVelocity, paddle.yVelocity};
@@ -31,8 +36,12 @@ public class Physics {
         // Scale the resultant trajectories if we've accidentally broken the laws of Physics.
         double mag = (puckInitialMomentum + paddleInitialMomentum) / (puckFinalMomentum + paddleFinalMomentum);
         // Calculate the final x and y speed settings for the two balls after collision.
-        puck.xVelocity = puckFinalTrajectory[0] * mag;
-        puck.yVelocity = puckFinalTrajectory[1] * mag;
+
+        puck.xVelocity = puckFinalTrajectory[0] * mag + (-(puck.xVelocity - paddle.xVelocity) * coefRestitutionBetween2Spheres);
+        puck.yVelocity = puckFinalTrajectory[1] * mag + (-(puck.yVelocity - paddle.yVelocity) * coefRestitutionBetween2Spheres);
+        //apply coefficient of restitution to account for energy loss due to heat and sound but also due to hand applying force.
+
+
 
         //Decrease velocity of paddle to account force applied.
         // MOMENTUM IS NOT CONSERVED HERE AS WOULD HAVE A HAND IN IT AND FORCE APPLIED. so is physics accurate ish as cant simulate a hand force easily.
