@@ -101,57 +101,17 @@ public class MainPanel extends BasePanel {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        char key = e.getKeyChar();
+        this.currentFrame.KeyPressed(e);
 
-        switch (key) {
-            case 'w' -> {
 
-                GameFrame.player1.yVelocity = -super.playerSpeed;
-            }
-            case 's' -> {
 
-                GameFrame.player1.yVelocity = super.playerSpeed;
-            }
-            case 'a' -> {
-
-                GameFrame.player1.xVelocity = -super.playerSpeed;
-            }
-            case 'd' -> {
-
-                GameFrame.player1.xVelocity = super.playerSpeed;
-            }
-
-        }
-        // same but with arrow keys for player 2
-        int keyCode = e.getKeyCode();
-        switch (keyCode) {
-            case KeyEvent.VK_UP -> {
-
-                GameFrame.player2.yVelocity = -super.playerSpeed;
-            }
-            case KeyEvent.VK_DOWN -> {
-
-                GameFrame.player2.yVelocity = super.playerSpeed;
-            }
-            case KeyEvent.VK_LEFT -> {
-
-                GameFrame.player2.xVelocity = -super.playerSpeed;
-            }
-            case KeyEvent.VK_RIGHT -> {
-
-                GameFrame.player2.xVelocity = super.playerSpeed;
-            }
-        }
-
-        //Handle Cheat Codes
-        GameFrame.cheatCodes((int) e.getKeyChar() - 48); // 1 = 48 in ascii
 
     }
 
 
     @Override
     public void keyReleased(KeyEvent e) {
-        this.currentFrame.KeyEvent(e);
+        this.currentFrame.KeyReleased(e);
     }
 
     /**

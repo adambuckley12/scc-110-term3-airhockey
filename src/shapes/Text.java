@@ -6,9 +6,7 @@ import java.awt.*;
 
 /**
  * Models a simple piece of text.
- * This class represents a Text object. When combined with the GameArena class,
- * instances of the Text class can be displayed on the screen to show display
- * an appropriate piece of text.
+ * This class represents a Text object.
  */
 public class Text extends BaseShape {
 

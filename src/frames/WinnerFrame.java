@@ -24,6 +24,7 @@ public class WinnerFrame extends BaseFrame {
     public WinnerFrame(BasePanel parentPanel, int rightPlayerScore, int leftPlayerScore) { //right = left player, left = right player
 
         super.parentPanel = parentPanel;
+        super.playSound("src/assets/audio/drumroll.wav");
         super.setTitle("Adam Buckley SCC110 Air Hockey Term 3 - Winner Frame");
         //add score from game frame
         shapes.add(new Text("Score: " + leftPlayerScore + ":" + rightPlayerScore, 70, 200, 60, new Color(0f, 0f, 0f, 1f), 1));
@@ -109,11 +110,16 @@ public class WinnerFrame extends BaseFrame {
     }
 
     @Override
-    public void KeyEvent(KeyEvent e) {
+    public void KeyPressed(KeyEvent e) {
         //back to main menu
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
         }
+
+    }
+
+    @Override
+    public void KeyReleased(KeyEvent e) {
 
     }
 

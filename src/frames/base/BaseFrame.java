@@ -51,5 +51,7 @@ public abstract class BaseFrame extends JFrame {
     public abstract void MouseEvent(MouseEvent e);
 
     // Abstract method for handling key events
-    public abstract void KeyEvent(KeyEvent e);
+    public abstract void KeyPressed(KeyEvent e);
+
+    public abstract void KeyReleased(KeyEvent e);
 }

@@ -85,12 +85,17 @@ public class MainFrame extends BaseFrame {
     }
 
     @Override
-    public void KeyEvent(KeyEvent e) {
+    public void KeyPressed(KeyEvent e) {
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             //close the window
             System.exit(0);
         }
+
+    }
+
+    @Override
+    public void KeyReleased(KeyEvent e) {
 
     }
 

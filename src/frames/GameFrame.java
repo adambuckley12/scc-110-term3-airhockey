@@ -8,6 +8,7 @@ import shapes.Sphere;
 import shapes.Text;
 import shapes.base.BaseShape;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -227,10 +228,18 @@ public class GameFrame extends BaseFrame {
                             leftGoalCount++;
                             leftGoalText.text = String.valueOf(leftGoalCount);
                             resetPositions(1);
-                            super.playSound("src/assets/audio/applause.wav");
 
-                            if (leftGoalCount >= super.parentPanel.maxGoals) gameWon(2);
-                            break;
+
+                            if (leftGoalCount >= super.parentPanel.maxGoals)
+                            {
+                                gameWon(2);
+                                break;
+                            }
+                            else
+                            {
+                                super.playSound("src/assets/audio/applause.wav");
+                            }
+
                         }
                     } else if (comparison == rightGoal) {
                         if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If in goal
@@ -239,9 +248,18 @@ public class GameFrame extends BaseFrame {
                             rightGoalText.text = String.valueOf(rightGoalCount);
                             resetPositions(2);
 
-                            super.playSound("src/assets/audio/applause.wav");
-                            if (rightGoalCount >= super.parentPanel.maxGoals) gameWon(1);
-                            break;
+
+                            if (rightGoalCount >= super.parentPanel.maxGoals)
+                            {
+                                gameWon(1);
+                                break;
+                            }
+                            else
+                            {
+                                super.playSound("src/assets/audio/applause.wav");
+                            }
+
+
                         }
                     }
 
@@ -271,7 +289,7 @@ public class GameFrame extends BaseFrame {
     }
 
     @Override
-    public void KeyEvent(KeyEvent e) {
+    public void KeyPressed(KeyEvent e) {
 
         char key = e.getKeyChar();
         int keyCode = e.getKeyCode();
@@ -289,6 +307,9 @@ public class GameFrame extends BaseFrame {
             case 'd' ->
                 //Set Sphere PLayer2 x velocity to 5
                     GameFrame.player1.xVelocity = 5;
+            case 'r' ->
+                //Reset positions (in case of puck stuck glitch)d
+                    resetPositions(0);
         }
 
         switch (keyCode) {
@@ -318,6 +339,35 @@ public class GameFrame extends BaseFrame {
 
 
     }
+
+    @Override
+    public void KeyReleased(KeyEvent e) {
+
+        char key = e.getKeyChar();
+        int keyCode = e.getKeyCode();
+
+        switch (key) {
+            case 'w', 's' ->
+                //Set Sphere PLayer1 y velocity to 0
+                    GameFrame.player1.yVelocity = 0;
+            case 'a', 'd' ->
+                //Set Sphere PLayer2 x velocity to 0
+                    GameFrame.player1.xVelocity = 0;
+        }
+
+        switch (keyCode) {
+            case KeyEvent.VK_UP, KeyEvent.VK_DOWN ->
+                //Set Sphere PLayer1 y velocity to 0
+                    GameFrame.player2.yVelocity = 0;
+            case KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT ->
+                //Set Sphere PLayer2 x velocity to 0
+                    GameFrame.player2.xVelocity = 0;
+        }
+        //Handle Cheat Codes
+        GameFrame.cheatCodes((int) e.getKeyChar() - 48); // 1 = 48 in ascii
+
+    }
+
 
     private void resetPositions(int scorer) {
 
@@ -401,8 +451,6 @@ public class GameFrame extends BaseFrame {
         // Set the winner in the parent panel
         super.parentPanel.winner = winner;
 
-        // Play applause sound
-        super.playSound("src/assets/audio/applause.wav");
 
         // Go to the winner frame and reset goal counts and positions
         super.parentPanel.currentFrame = new WinnerFrame(super.parentPanel, leftGoalCount, rightGoalCount);
