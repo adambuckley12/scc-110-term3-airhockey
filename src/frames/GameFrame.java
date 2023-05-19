@@ -8,7 +8,6 @@ import shapes.Sphere;
 import shapes.Text;
 import shapes.base.BaseShape;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class GameFrame extends BaseFrame {
     public static final Sphere player1 = new Sphere(50, 300, 0, 70, 1, new Color(0f, 0.2f, 0.9f, 1f), 0, 0);
     public static final Sphere player2 = new Sphere(850, 300, 0, 70, 1, new Color(1f, 0.2f, 0f, 1f), 0, 0);
-    public static final Sphere puck1 = new Sphere(451, 300, 0, 45, 2, new Color(0f, 0f, 0f, 1f), 0, 0);
+    public static final Sphere gamePuck = new Sphere(451, 300, 0, 45, 2, new Color(0f, 0f, 0f, 1f), 0, 0);
     public final Rectangle leftGoal = new Rectangle(0, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
     public final Rectangle rightGoal = new Rectangle(900, 300, 0, 40, 224, 0, new Color(0f, 0f, 0f, .1f));
     private final ArrayList<BaseShape> shapes = new ArrayList<>();
@@ -40,7 +39,7 @@ public class GameFrame extends BaseFrame {
         shapes.add(rightGoal);
         shapes.add(player1);
         shapes.add(player2);
-        shapes.add(puck1);
+        shapes.add(gamePuck);
         shapes.add(leftGoalText);
         shapes.add(rightGoalText);
 
@@ -81,10 +80,10 @@ public class GameFrame extends BaseFrame {
                     player2.colour = new Color(1, 0, 0, 1f);
             case 9 ->
                 //make puck invisible
-                    puck1.colour = new Color(0, 0, 0, 0.02f);
+                    gamePuck.colour = new Color(0, 0, 0, 0.02f);
             case 0 ->
                 //make puck visible
-                    puck1.colour = new Color(0, 0, 0, 1f);
+                    gamePuck.colour = new Color(0, 0, 0, 1f);
             case ((int) '`' - 48) -> {
                 //make puck rainbow (change it to random every second for 20 seconds)
                 //make new thread to change colour every second
@@ -92,7 +91,7 @@ public class GameFrame extends BaseFrame {
                     for (int i = 0; i < 100; i++) {
                         try {
                             Thread.sleep(100);
-                            puck1.colour = new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
+                            gamePuck.colour = new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), 1f);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -149,25 +148,27 @@ public class GameFrame extends BaseFrame {
         }
     }
 
-    @Override
-    public void updatePositions() {
+    private void keepPlayerInFrameArea()
+    {
+        int centerX = parentPanel.getWidth()/2;
 
-        // Make sure players are kept within bounds, include radius in calculations
+        int greatestX = parentPanel.getWidth();
+        int greatestY = parentPanel.getHeight();
 
-        if (player1.x + player1.width / 2 > 450) {
-            player1.x = 450 - player1.width / 2;
+        if (player1.x + player1.width / 2 > centerX) {
+            player1.x = centerX - player1.width / 2;
         }
 
-        if (player2.x - player2.width / 2 < 450) {
-            player2.x = 450 + player2.width / 2;
+        if (player2.x - player2.width / 2 < centerX) {
+            player2.x = centerX + player2.width / 2;
         }
 
         if (player1.x - player1.width / 2 < 0) {
             player1.x = player1.width / 2;
         }
 
-        if (player2.x + player2.width / 2 > 900) {
-            player2.x = 900 - player2.width / 2;
+        if (player2.x + player2.width / 2 > greatestX) {
+            player2.x = greatestX - player2.width / 2;
         }
 
         if (player1.y - player1.height / 2 < 0) {
@@ -178,32 +179,38 @@ public class GameFrame extends BaseFrame {
             player2.y = player2.height / 2;
         }
 
-        if (player1.y + player1.height / 2 > 600) {
-            player1.y = 600 - player1.height / 2;
+        if (player1.y + player1.height / 2 > greatestY) {
+            player1.y = greatestY - player1.height / 2;
         }
 
-        if (player2.y + player2.height / 2 > 600) {
-            player2.y = 600 - player2.height / 2;
+        if (player2.y + player2.height / 2 > greatestY) {
+            player2.y = greatestY - player2.height / 2;
         }
+    }
+
+    @Override
+    public void updatePositions() {
+
+
+
+        // Make sure players are kept within bounds, include radius in calculations
+        keepPlayerInFrameArea();
 
         for (BaseShape shape : shapes) {
             if (shape instanceof Rectangle) continue; // No need to update positions of rectangles as they are static
 
-
-            // TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
             shape.xVelocity *= (1.0 - super.parentPanel.coefFriction);
             shape.yVelocity *= (1.0 - super.parentPanel.coefFriction);
 
             int initialX = shape.x;
             int initialY = shape.y;
 
-            shape.x += Math.round(shape.xVelocity); // 900, 10d = 910
+            shape.x += Math.round(shape.xVelocity); //Round to nearest integer
             shape.y += Math.round(shape.yVelocity);
 
-            // TODO: another setting - max speed maybe???
 
             // ONLY NEED TO CALCULATE THIS FOR PUCK ASSUME PLAYER PADDLE DOESN'T BOUNCE AS CONTROLLED
-            if (shape != puck1) continue;
+            if (shape != gamePuck) continue;
             for (BaseShape comparison : shapes) {
                 // Make sure that we skip the current object
                 if (comparison.x == shape.x && comparison.y == shape.y) continue;
@@ -375,16 +382,16 @@ public class GameFrame extends BaseFrame {
 
         if (scorer == 0) {
             // Move the puck to the center
-            puck1.x = 450;
-            puck1.y = 300;
+            gamePuck.x = 450;
+            gamePuck.y = 300;
         } else if (scorer == 2) {
             // Move the puck to the right of center
-            puck1.x = 500;
-            puck1.y = 300;
+            gamePuck.x = 500;
+            gamePuck.y = 300;
         } else if (scorer == 1) {
             // Move the puck to the left
-            puck1.x = 400;
-            puck1.y = 300;
+            gamePuck.x = 400;
+            gamePuck.y = 300;
         }
 
         // Move players to the left and right
@@ -395,8 +402,8 @@ public class GameFrame extends BaseFrame {
         player2.y = 300;
 
         // Reset velocities
-        puck1.xVelocity = 0;
-        puck1.yVelocity = 0;
+        gamePuck.xVelocity = 0;
+        gamePuck.yVelocity = 0;
 
         player1.xVelocity = 0;
         player1.yVelocity = 0;
