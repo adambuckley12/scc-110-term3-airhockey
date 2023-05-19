@@ -8,31 +8,31 @@ public class Physics {
     public static void deflect(BaseShape puck, BaseShape paddle) {
 
         // Calculate initial momentum of the spheres... We assume unit mass here. //TODO Allow for mass of spheres as a setting and implement here maybe???
-        double p1InitialMomentum = Math.sqrt(puck.xVelocity * puck.xVelocity + puck.yVelocity * puck.yVelocity);
-        double p2InitialMomentum = Math.sqrt((paddle.xVelocity * paddle.xVelocity + paddle.yVelocity * paddle.yVelocity) * 8); //ASSUMING PUCK HAS MUCH LARGER MASS AS WOULD HAVE A HAND IN IT AND FORCE APPLIED
+        double puckInitialMomentum = Math.sqrt(puck.xVelocity * puck.xVelocity + puck.yVelocity * puck.yVelocity);
+        double paddleInitialMomentum = Math.sqrt((paddle.xVelocity * paddle.xVelocity + paddle.yVelocity * paddle.yVelocity) * 8); //ASSUMING PUCK HAS MUCH LARGER MASS AS WOULD HAVE A HAND IN IT AND FORCE APPLIED
         // calculate motion vectors
-        double[] p1Trajectory = {puck.xVelocity, puck.yVelocity};
-        double[] p2Trajectory = {paddle.xVelocity, paddle.yVelocity};
+        double[] puckTrajectory = {puck.xVelocity, puck.yVelocity};
+        double[] paddleTrajectory = {paddle.xVelocity, paddle.yVelocity};
         // Calculate Impact Vector
         double[] impactVector = {paddle.x - puck.x, paddle.y - puck.y};
         double[] impactVectorNorm = normalizeVector(impactVector);
         // Calculate scalar product of each trajectory and impact vector
-        double p1dotImpact = Math.abs(p1Trajectory[0] * impactVectorNorm[0] + p1Trajectory[1] * impactVectorNorm[1]);
-        double p2dotImpact = Math.abs(p2Trajectory[0] * impactVectorNorm[0] + p2Trajectory[1] * impactVectorNorm[1]);
+        double puckDotImpact = Math.abs(puckTrajectory[0] * impactVectorNorm[0] + puckTrajectory[1] * impactVectorNorm[1]);
+        double paddleDotImpact = Math.abs(paddleTrajectory[0] * impactVectorNorm[0] + paddleTrajectory[1] * impactVectorNorm[1]);
         // Calculate the deflection vectors - the amount of energy transferred from one ball to the other in each axis
-        double[] p1Deflect = {-impactVectorNorm[0] * p2dotImpact, -impactVectorNorm[1] * p2dotImpact};
-        double[] p2Deflect = {impactVectorNorm[0] * p1dotImpact, impactVectorNorm[1] * p1dotImpact};
+        double[] puckDeflect = {-impactVectorNorm[0] * paddleDotImpact, -impactVectorNorm[1] * paddleDotImpact};
+        double[] paddleDeflect = {impactVectorNorm[0] * puckDotImpact, impactVectorNorm[1] * puckDotImpact};
         // Calculate the final trajectories
-        double[] p1FinalTrajectory = {p1Trajectory[0] + p1Deflect[0] - p2Deflect[0], p1Trajectory[1] + p1Deflect[1] - p2Deflect[1]};
-        double[] p2FinalTrajectory = {p2Trajectory[0] + p2Deflect[0] - p1Deflect[0], p2Trajectory[1] + p2Deflect[1] - p1Deflect[1]};
+        double[] puckFinalTrajectory = {puckTrajectory[0] + puckDeflect[0] - paddleDeflect[0], puckTrajectory[1] + puckDeflect[1] - paddleDeflect[1]};
+        double[] paddleFinalTrajectory = {paddleTrajectory[0] + paddleDeflect[0] - puckDeflect[0], paddleTrajectory[1] + paddleDeflect[1] - puckDeflect[1]};
         // Calculate the final energy in the system.
-        double p1FinalMomentum = Math.sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
-        double p2FinalMomentum = Math.sqrt((p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]) * 5);
+        double puckFinalMomentum = Math.sqrt(puckFinalTrajectory[0] * puckFinalTrajectory[0] + puckFinalTrajectory[1] * puckFinalTrajectory[1]);
+        double paddleFinalMomentum = Math.sqrt((paddleFinalTrajectory[0] * paddleFinalTrajectory[0] + paddleFinalTrajectory[1] * paddleFinalTrajectory[1]) * 5);
         // Scale the resultant trajectories if we've accidentally broken the laws of Physics.
-        double mag = (p1InitialMomentum + p2InitialMomentum) / (p1FinalMomentum + p2FinalMomentum);
+        double mag = (puckInitialMomentum + paddleInitialMomentum) / (puckFinalMomentum + paddleFinalMomentum);
         // Calculate the final x and y speed settings for the two balls after collision.
-        puck.xVelocity = p1FinalTrajectory[0] * mag;
-        puck.yVelocity = p1FinalTrajectory[1] * mag;
+        puck.xVelocity = puckFinalTrajectory[0] * mag;
+        puck.yVelocity = puckFinalTrajectory[1] * mag;
 
         //Decrease velocity of paddle to account force applied.
         // MOMENTUM IS NOT CONSERVED HERE AS WOULD HAVE A HAND IN IT AND FORCE APPLIED. so is physics accurate ish as cant simulate a hand force easily.

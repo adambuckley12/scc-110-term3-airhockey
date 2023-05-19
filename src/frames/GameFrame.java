@@ -57,36 +57,36 @@ public class GameFrame extends BaseFrame {
                 player2.height += 5;
             }
             case 3 -> {
-                //make player 1 smaller
+                // make player 1 smaller
                 player1.width -= 5;
                 player1.height -= 5;
             }
             case 4 -> {
-                //make player 2 smaller
+                // make player 2 smaller
                 player2.width -= 5;
                 player2.height -= 5;
             }
             case 5 ->
-                //make player 1 nearly invisible
+                // make player 1 nearly invisible
                     player1.colour = new Color(0, 0, 0, 0.02f);
             case 6 ->
-                //make player 2 nearly invisible
+                // make player 2 nearly invisible
                     player2.colour = new Color(0, 0, 0, 0.05f);
             case 7 ->
-                //make player 1 visible
+                // make player 1 visible
                     player1.colour = new Color(0, 0, 1, 1f);
             case 8 ->
-                //make player 2 visible
+                // make player 2 visible
                     player2.colour = new Color(1, 0, 0, 1f);
             case 9 ->
-                //make puck invisible
+                // make puck invisible
                     gamePuck.colour = new Color(0, 0, 0, 0.02f);
             case 0 ->
-                //make puck visible
+                // make puck visible
                     gamePuck.colour = new Color(0, 0, 0, 1f);
             case ((int) '`' - 48) -> {
-                //make puck rainbow (change it to random every second for 20 seconds)
-                //make new thread to change colour every second
+                // make puck rainbow (change it to random every second for 20 seconds)
+                // make new thread to change colour every second
                 new Thread(() -> {
                     for (int i = 0; i < 100; i++) {
                         try {
@@ -144,7 +144,7 @@ public class GameFrame extends BaseFrame {
                 }
             }
 
-            window.drawImage(buffer, 0, 0, this);//this.getInsets().left
+            window.drawImage(buffer, 0, 0, this);// this.getInsets().left
         }
     }
 
@@ -205,7 +205,7 @@ public class GameFrame extends BaseFrame {
             int initialX = shape.x;
             int initialY = shape.y;
 
-            shape.x += Math.round(shape.xVelocity); //Round to nearest integer
+            shape.x += Math.round(shape.xVelocity); // Round to nearest integer
             shape.y += Math.round(shape.yVelocity);
 
 
@@ -281,7 +281,7 @@ public class GameFrame extends BaseFrame {
     @Override
     public void MouseEvent(MouseEvent e) {
 
-        //Menu Exit Button:
+        // Menu Exit Button:
         if (e.getX() > 775 && e.getY() < 58) {
             // If the mouse click is within the exit button area
             // Go back to the main frame
@@ -303,34 +303,34 @@ public class GameFrame extends BaseFrame {
 
         switch (key) {
             case 'w' ->
-                //Set Sphere PLayer1 y velocity to 5
+                // Set Sphere PLayer1 y velocity to 5
                     GameFrame.player1.yVelocity = -5;
             case 's' ->
-                //Set Sphere PLayer1 y velocity to -5
+                // Set Sphere PLayer1 y velocity to -5
                     GameFrame.player1.yVelocity = 5;
             case 'a' ->
-                //Set Sphere PLayer2 x velocity to -5
+                // Set Sphere PLayer2 x velocity to -5
                     GameFrame.player1.xVelocity = -5;
             case 'd' ->
-                //Set Sphere PLayer2 x velocity to 5
+                // Set Sphere PLayer2 x velocity to 5
                     GameFrame.player1.xVelocity = 5;
             case 'r' ->
-                //Reset positions (in case of puck stuck glitch)d
+                // Reset positions (in case of puck stuck glitch)d
                     resetPositions(0);
         }
 
         switch (keyCode) {
             case KeyEvent.VK_UP ->
-                //Set Sphere PLayer1 y velocity to 5
+                // Set Sphere PLayer1 y velocity to 5
                     GameFrame.player2.yVelocity = -5;
             case KeyEvent.VK_DOWN ->
-                //Set Sphere PLayer1 y velocity to -5
+                // Set Sphere PLayer1 y velocity to -5
                     GameFrame.player2.yVelocity = 5;
             case KeyEvent.VK_LEFT ->
-                //Set Sphere PLayer2 x velocity to -5
+                // Set Sphere PLayer2 x velocity to -5
                     GameFrame.player2.xVelocity = -5;
             case KeyEvent.VK_RIGHT ->
-                //Set Sphere PLayer2 x velocity to 5
+                // Set Sphere PLayer2 x velocity to 5
                     GameFrame.player2.xVelocity = 5;
 
             case KeyEvent.VK_ESCAPE -> {
@@ -355,28 +355,40 @@ public class GameFrame extends BaseFrame {
 
         switch (key) {
             case 'w', 's' ->
-                //Set Sphere PLayer1 y velocity to 0
+                // Set Sphere PLayer1 y velocity to 0
                     GameFrame.player1.yVelocity = 0;
             case 'a', 'd' ->
-                //Set Sphere PLayer2 x velocity to 0
+                // Set Sphere PLayer2 x velocity to 0
                     GameFrame.player1.xVelocity = 0;
         }
 
         switch (keyCode) {
             case KeyEvent.VK_UP, KeyEvent.VK_DOWN ->
-                //Set Sphere PLayer1 y velocity to 0
+                // Set Sphere PLayer1 y velocity to 0
                     GameFrame.player2.yVelocity = 0;
             case KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT ->
-                //Set Sphere PLayer2 x velocity to 0
+                // Set Sphere PLayer2 x velocity to 0
                     GameFrame.player2.xVelocity = 0;
         }
-        //Handle Cheat Codes
+        // Handle Cheat Codes
         GameFrame.cheatCodes((int) e.getKeyChar() - 48); // 1 = 48 in ascii
 
     }
 
 
     private void resetPositions(int scorer) {
+
+
+        // Reset velocities
+        gamePuck.xVelocity = 0;
+        gamePuck.yVelocity = 0;
+
+        player1.xVelocity = 0;
+        player1.yVelocity = 0;
+
+        player2.xVelocity = 0;
+        player2.yVelocity = 0;
+
 
         // 0 for none, 1 for left, 2 for right
 
@@ -400,16 +412,6 @@ public class GameFrame extends BaseFrame {
 
         player2.x = 850;
         player2.y = 300;
-
-        // Reset velocities
-        gamePuck.xVelocity = 0;
-        gamePuck.yVelocity = 0;
-
-        player1.xVelocity = 0;
-        player1.yVelocity = 0;
-
-        player2.xVelocity = 0;
-        player2.yVelocity = 0;
     }
 
     private void puckDeflectionOffArenaEdge(BaseShape puck) {
