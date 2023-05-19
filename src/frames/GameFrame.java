@@ -186,35 +186,35 @@ public class GameFrame extends BaseFrame {
             player2.y = 600 - player2.height / 2;
         }
 
-        for (BaseShape o : shapes) {
-            if (o instanceof Rectangle) continue; // No need to update positions of rectangles as they are static
+        for (BaseShape shape : shapes) {
+            if (shape instanceof Rectangle) continue; // No need to update positions of rectangles as they are static
 
 
             // TODO: give options for friction in settings (Add settings to each Panel? BasePanel?)
-            o.xVelocity *= (1.0 - super.parentPanel.coefFriction);
-            o.yVelocity *= (1.0 - super.parentPanel.coefFriction);
+            shape.xVelocity *= (1.0 - super.parentPanel.coefFriction);
+            shape.yVelocity *= (1.0 - super.parentPanel.coefFriction);
 
-            int initialX = o.x;
-            int initialY = o.y;
+            int initialX = shape.x;
+            int initialY = shape.y;
 
-            o.x += Math.round(o.xVelocity); // 900, 10d = 910
-            o.y += Math.round(o.yVelocity);
+            shape.x += Math.round(shape.xVelocity); // 900, 10d = 910
+            shape.y += Math.round(shape.yVelocity);
 
             // TODO: another setting - max speed maybe???
 
             // ONLY NEED TO CALCULATE THIS FOR PUCK ASSUME PLAYER PADDLE DOESN'T BOUNCE AS CONTROLLED
-            if (o != puck1) continue;
+            if (shape != puck1) continue;
             for (BaseShape comparison : shapes) {
                 // Make sure that we skip the current object
-                if (comparison.x == o.x && comparison.y == o.y) continue;
+                if (comparison.x == shape.x && comparison.y == shape.y) continue;
 
                 if (comparison instanceof Sphere) {
-                    if (((Sphere) o).collides((Sphere) comparison)) {
+                    if (((Sphere) shape).collides((Sphere) comparison)) {
                         // The point at which they touch
-                        o.x = initialX;
-                        o.y = initialY;
+                        shape.x = initialX;
+                        shape.y = initialY;
                         // Deflect
-                        Physics.deflect(o, comparison);
+                        Physics.deflect(shape, comparison);
                         // Write code to play sound from file here
 
                         super.playSound("src/assets/audio/hit.wav");
@@ -223,7 +223,7 @@ public class GameFrame extends BaseFrame {
 
                     // Check if in goal
                     if (comparison == leftGoal) {
-                        if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If center in goal
+                        if ((shape.x < comparison.x + comparison.width / 2) && (shape.y > comparison.y - comparison.height / 2) && (shape.y < comparison.y + comparison.height / 2)) { // If center in goal
 
                             leftGoalCount++;
                             leftGoalText.text = String.valueOf(leftGoalCount);
@@ -242,7 +242,7 @@ public class GameFrame extends BaseFrame {
 
                         }
                     } else if (comparison == rightGoal) {
-                        if ((o.x > comparison.x - comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If in goal
+                        if ((shape.x > comparison.x - comparison.width / 2) && (shape.y > comparison.y - comparison.height / 2) && (shape.y < comparison.y + comparison.height / 2)) { // If in goal
 
                             rightGoalCount++;
                             rightGoalText.text = String.valueOf(rightGoalCount);
@@ -264,7 +264,7 @@ public class GameFrame extends BaseFrame {
                     }
 
                     // Deflect off arena edge if in contact and not in line with goal
-                    puckDeflectionOffArenaEdge(o);
+                    puckDeflectionOffArenaEdge(shape);
                 }
             }
         }
