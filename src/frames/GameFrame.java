@@ -264,7 +264,7 @@ public class GameFrame extends BaseFrame {
                     }
 
                     // Deflect off arena edge if in contact and not in line with goal
-                    ballDeflectionOffArenaEdge(o);
+                    puckDeflectionOffArenaEdge(o);
                 }
             }
         }
@@ -405,36 +405,36 @@ public class GameFrame extends BaseFrame {
         player2.yVelocity = 0;
     }
 
-    private void ballDeflectionOffArenaEdge(BaseShape o) {
+    private void puckDeflectionOffArenaEdge(BaseShape puck) {
 
         // If the puck is inline with a goal, allow it to pass through
-        if (o.y < 300 + 100 && o.y > 300 - 100) {
+        if (puck.y < 300 + 100 && puck.y > 300 - 100) {
             return;
         }
 
-        int radius = o.width / 2;
+        int radius = puck.width / 2;
         int border = 16;
         boolean didCollide = false;
 
         // Check for collision with the arena edges
-        if (o.x + radius > 900 - border) {
-            o.x = 900 - 17 - radius;
-            o.xVelocity *= -1;
+        if (puck.x + radius > 900 - border) {
+            puck.x = 900 - 17 - radius;
+            puck.xVelocity *= -1;
             didCollide = true;
         }
-        if (o.x - radius < border) {
-            o.x = 17 + radius; // Get it just inside the border
-            o.xVelocity *= -1;
+        if (puck.x - radius < border) {
+            puck.x = 17 + radius; // Get it just inside the border
+            puck.xVelocity *= -1;
             didCollide = true;
         }
-        if (o.y + radius > 600 - border) {
-            o.y = 600 - 17 - radius;
-            o.yVelocity *= -1;
+        if (puck.y + radius > 600 - border) {
+            puck.y = 600 - 17 - radius;
+            puck.yVelocity *= -1;
             didCollide = true;
         }
-        if (o.y - radius < border) {
-            o.y = 17 + radius;
-            o.yVelocity *= -1;
+        if (puck.y - radius < border) {
+            puck.y = 17 + radius;
+            puck.yVelocity *= -1;
             didCollide = true;
         }
 
@@ -442,8 +442,8 @@ public class GameFrame extends BaseFrame {
             super.playSound("src/assets/audio/bounce.wav");
 
             // Assume a small loss of energy on bounce (sound and heat)
-            o.xVelocity *= super.parentPanel.coefRestitution;
-            o.yVelocity *= super.parentPanel.coefRestitution;
+            puck.xVelocity *= super.parentPanel.coefRestitution;
+            puck.yVelocity *= super.parentPanel.coefRestitution;
         }
     }
 
