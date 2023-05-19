@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
@@ -48,4 +49,7 @@ public abstract class BaseFrame extends JFrame {
 
     // Abstract method for handling mouse events
     public abstract void MouseEvent(MouseEvent e);
+
+    // Abstract method for handling key events
+    public abstract void KeyEvent(KeyEvent e);
 }

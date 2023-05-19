@@ -6,6 +6,7 @@ import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -102,6 +103,15 @@ public class WinnerFrame extends BaseFrame {
         //Top Left: 40, 540
         //Bottom Right: 390, 570
         if (e.getX() >= 35 && e.getX() <= 390 && e.getY() >= 505 && e.getY() <= 570) {
+            super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
+        }
+
+    }
+
+    @Override
+    public void KeyEvent(KeyEvent e) {
+        //back to main menu
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
         }
 

@@ -80,6 +80,8 @@ public class MainPanel extends BasePanel {
                 Thread.sleep(10);
             }
         } catch (InterruptedException ignored) {
+            // This exception is thrown when the thread is interrupted.
+            // don't need to do anything here.
         }
 
         if (super.currentFrame != null)
@@ -141,7 +143,7 @@ public class MainPanel extends BasePanel {
             }
         }
 
-        //Handel Cheat Codes
+        //Handle Cheat Codes
         GameFrame.cheatCodes((int) e.getKeyChar() - 48); // 1 = 48 in ascii
 
     }
@@ -149,77 +151,35 @@ public class MainPanel extends BasePanel {
 
     @Override
     public void keyReleased(KeyEvent e) {
-
-        if (e.getKeyChar() == 'w') {
-            //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player1.yVelocity = -0;
-
-        }
-        if (e.getKeyChar() == 's') {
-            //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player1.yVelocity = 0;
-        }
-        if (e.getKeyChar() == 'a') {
-            //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player1.xVelocity = -0;
-        }
-        if (e.getKeyChar() == 'd') {
-            //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player1.xVelocity = 0;
-        }
-
-        // same but with arrow keys for player 2
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            //Set Sphere PLayer1 y velocity to 5
-            GameFrame.player2.yVelocity = -0;
-
-        }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            //Set Sphere PLayer1 y velocity to -5
-            GameFrame.player2.yVelocity = 0;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            //Set Sphere PLayer2 x velocity to -5
-            GameFrame.player2.xVelocity = -0;
-        }
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            //Set Sphere PLayer2 x velocity to 5
-            GameFrame.player2.xVelocity = 0;
-        }
-
-
+        this.currentFrame.KeyEvent(e);
     }
-
 
     /**
      * MouseListener overrides
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-
-        //Check current frame = main frame
         this.currentFrame.MouseEvent(e);
-
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        //not used
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        //not used
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        //not used
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
+        //not used
     }
 
 
@@ -228,11 +188,11 @@ public class MainPanel extends BasePanel {
      */
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        //not used
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-
+        //not used
     }
 }

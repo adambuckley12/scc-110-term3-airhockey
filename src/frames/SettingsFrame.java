@@ -8,6 +8,7 @@ import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -113,6 +114,15 @@ public class SettingsFrame extends BaseFrame {
             super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
         }
 
+
+    }
+
+    @Override
+    public void KeyEvent(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
+        }
 
     }
 }

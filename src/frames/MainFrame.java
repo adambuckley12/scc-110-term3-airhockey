@@ -2,15 +2,15 @@ package frames;
 
 import frames.base.BaseFrame;
 import panels.base.BasePanel;
-import shapes.base.BaseShape;
+
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+
 
 public class MainFrame extends BaseFrame {
-    private final ArrayList<BaseShape> shapes = new ArrayList<>();
     private final Image backgroundImage = Toolkit.getDefaultToolkit().getImage("src/assets/images/MainMenuAirHockey.png");
     private BufferedImage buffer;
     private Graphics2D graphics;
@@ -82,6 +82,16 @@ public class MainFrame extends BaseFrame {
             System.exit(0);
         }
         System.out.println("Mouse event in MainFrame");
+    }
+
+    @Override
+    public void KeyEvent(KeyEvent e) {
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            //close the window
+            System.exit(0);
+        }
+
     }
 
 }

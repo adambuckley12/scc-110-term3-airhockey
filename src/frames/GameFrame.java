@@ -9,6 +9,7 @@ import shapes.Text;
 import shapes.base.BaseShape;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -218,7 +219,7 @@ public class GameFrame extends BaseFrame {
                         super.playSound("src/assets/audio/hit.wav");
                     }
                 } else if (comparison instanceof Rectangle) {
-                    // TODO: Maybe assume non-elastic collisions? (Very big maybe)
+
                     // Check if in goal
                     if (comparison == leftGoal) {
                         if ((o.x < comparison.x + comparison.width / 2) && (o.y > comparison.y - comparison.height / 2) && (o.y < comparison.y + comparison.height / 2)) { // If center in goal
@@ -266,6 +267,55 @@ public class GameFrame extends BaseFrame {
             leftGoalCount = 0;
             rightGoalCount = 0;
         }
+
+    }
+
+    @Override
+    public void KeyEvent(KeyEvent e) {
+
+        char key = e.getKeyChar();
+        int keyCode = e.getKeyCode();
+
+        switch (key) {
+            case 'w' ->
+                //Set Sphere PLayer1 y velocity to 5
+                    GameFrame.player1.yVelocity = -5;
+            case 's' ->
+                //Set Sphere PLayer1 y velocity to -5
+                    GameFrame.player1.yVelocity = 5;
+            case 'a' ->
+                //Set Sphere PLayer2 x velocity to -5
+                    GameFrame.player1.xVelocity = -5;
+            case 'd' ->
+                //Set Sphere PLayer2 x velocity to 5
+                    GameFrame.player1.xVelocity = 5;
+        }
+
+        switch (keyCode) {
+            case KeyEvent.VK_UP ->
+                //Set Sphere PLayer1 y velocity to 5
+                    GameFrame.player2.yVelocity = -5;
+            case KeyEvent.VK_DOWN ->
+                //Set Sphere PLayer1 y velocity to -5
+                    GameFrame.player2.yVelocity = 5;
+            case KeyEvent.VK_LEFT ->
+                //Set Sphere PLayer2 x velocity to -5
+                    GameFrame.player2.xVelocity = -5;
+            case KeyEvent.VK_RIGHT ->
+                //Set Sphere PLayer2 x velocity to 5
+                    GameFrame.player2.xVelocity = 5;
+
+            case KeyEvent.VK_ESCAPE -> {
+                // If the escape key is pressed, go back to the main frame
+                super.parentPanel.currentFrame = new MainFrame(super.parentPanel);
+
+                // Reset positions and goal counts
+                resetPositions(0);
+                leftGoalCount = 0;
+                rightGoalCount = 0;
+            }
+        }
+
 
     }
 
