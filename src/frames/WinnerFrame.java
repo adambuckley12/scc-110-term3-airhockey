@@ -87,7 +87,7 @@ public class WinnerFrame extends BaseFrame {
         //Bottom Right: 360, 415
 
         if (e.getX() >= 35 && e.getX() <= 360 && e.getY() >= 334 && e.getY() <= 400) {
-            System.out.println("Play Again Button Clicked");
+            //System.out.println("Play Again Button Clicked");
             super.parentPanel.currentFrame = new GameFrame(super.parentPanel);
         }
 
@@ -95,7 +95,7 @@ public class WinnerFrame extends BaseFrame {
         //Top Left: 35, 420
         //Bottom Right: 320, 480
         if (e.getX() >= 35 && e.getX() <= 320 && e.getY() >= 420 && e.getY() <= 480) {
-            System.out.println("Settings Button Clicked");
+       //     System.out.println("Settings Button Clicked");
             super.parentPanel.currentFrame = new SettingsFrame(super.parentPanel);
         }
 
