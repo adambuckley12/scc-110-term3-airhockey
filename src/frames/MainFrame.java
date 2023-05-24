@@ -72,16 +72,16 @@ public class MainFrame extends BaseFrame {
         // Check if the mouse is within the start button
 
         if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 140 && e.getY() <= 200) {
-            System.out.println("Start button pressed");
+            //System.out.println("Start button pressed");
             super.parentPanel.currentFrame = new GameFrame(super.parentPanel);
         } else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 285 && e.getY() <= 345) {
-            System.out.println("GlobalSettings button pressed");
+            //System.out.println("GlobalSettings button pressed");
             super.parentPanel.currentFrame = new SettingsFrame(super.parentPanel);
         } else if (e.getX() >= 45 && e.getX() <= 350 && e.getY() >= 420 && e.getY() <= 480) {
-            System.out.println("Exit button pressed");
+            //System.out.println("Exit button pressed");
             System.exit(0);
         }
-        System.out.println("Mouse event in MainFrame");
+        //System.out.println("Mouse event in MainFrame");
     }
 
     @Override
