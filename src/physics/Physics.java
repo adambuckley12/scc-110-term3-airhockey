@@ -7,7 +7,7 @@ public class Physics {
 
     public static void deflect(BaseShape puck, BaseShape paddle) {
 
-        double coefRestitutionBetween2Spheres = 0.15f; // As paddle is a fixed point due to hand.
+        double coefRestitutionBetween2Spheres = 0.05f; // As paddle is a fixed point due to hand.
         // We calculate the change in momentum of the puck caused by the impulse and force from the hand and collision.#
         // and apply it to the paddle but also apply a coefficient of restitution to account for it will bounce even if paddle is stationary
         // both energy and momentum are not conserved in this system due to the hand applying a force + loss of heat and sound energy.
