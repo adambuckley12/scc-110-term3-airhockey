@@ -121,13 +121,15 @@ public class GameFrame extends BaseFrame {
         }
 
         synchronized (this) {
+            // Loop to handle rendering shapes onto the panel each frame
             if (!super.parentPanel.exiting) {
                 graphics.clearRect(0, 0, width, height);
-
+                //check for background image and render if there
                 if (backgroundImage != null)
                     graphics.drawImage(backgroundImage, 0, 0, width, height, 0, 0, backgroundImage.getWidth(null), backgroundImage.getHeight(null), null);
 
                 for (BaseShape o : shapes) {
+                    //loop through all shapes, check type and draw onto frame
                     graphics.setColor(o.colour);
                     if (o instanceof Sphere) {
                         graphics.fillOval(o.x - o.width / 2, o.y - o.height / 2, o.width, o.height);
@@ -144,7 +146,7 @@ public class GameFrame extends BaseFrame {
                 }
             }
 
-            window.drawImage(buffer, 0, 0, this);// this.getInsets().left
+            window.drawImage(buffer, 0, 0, this); //draw final image to window
         }
     }
 
@@ -155,6 +157,7 @@ public class GameFrame extends BaseFrame {
         int greatestX = parentPanel.getWidth();
         int greatestY = parentPanel.getHeight();
 
+        // simple checks to make sure player is in the correct half and cannot move over center line
         if (player1.x + player1.width / 2 > centerX) {
             player1.x = centerX - player1.width / 2;
         }
@@ -228,7 +231,7 @@ public class GameFrame extends BaseFrame {
                     }
                 } else if (comparison instanceof Rectangle) {
 
-                    // Check if in goal
+                    // Check if in left or right goal (at this point we know the shape = gamePuck from "if (shape != gamePuck) continue;"
                     if (comparison == leftGoal) {
                         if ((shape.x < comparison.x + comparison.width / 2) && (shape.y > comparison.y - comparison.height / 2) && (shape.y < comparison.y + comparison.height / 2)) { // If center in goal
 
