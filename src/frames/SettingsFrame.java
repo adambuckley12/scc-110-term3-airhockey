@@ -91,7 +91,7 @@ public class SettingsFrame extends BaseFrame {
         //Top Left: 40, 60
         //Bottom Right: 390, 120
         if (e.getX() >= 40 && e.getX() <= 390 && e.getY() >= 60 && e.getY() <= 120) {
-            System.out.println("Max Goals Button Clicked");
+          //  System.out.println("Max Goals Button Clicked");
             super.parentPanel.maxGoals++;
             if (super.parentPanel.maxGoals > 15) {
                 super.parentPanel.maxGoals = 1;
@@ -103,7 +103,7 @@ public class SettingsFrame extends BaseFrame {
         //Top Left: 40, 160
         //Bottom Right: 450, 210
         if (e.getX() >= 40 && e.getX() <= 450 && e.getY() >= 160 && e.getY() <= 210) {
-            System.out.println("Audio Button Clicked");
+           // System.out.println("Audio Button Clicked");
             super.parentPanel.audioEnabled = !super.parentPanel.audioEnabled;
         }
 
